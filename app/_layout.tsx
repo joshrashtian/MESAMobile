@@ -1,25 +1,32 @@
 import { View, Text, Appearance, useColorScheme } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Stack, useRouter } from "expo-router";
-import { AuthContextProvider, useUser } from "./(contexts)/AuthContext";
+import { router, Slot, Stack, useRouter } from "expo-router";
+import {
+  AuthContextProvider,
+  ContextProps,
+  UserData,
+  useUser,
+} from "./(contexts)/AuthContext";
+import ConnectLayout from "./connect/_layout";
+import AuthStack from "./(auth)/_layout";
 
 const RootLayout = () => {
   const colorscheme = useColorScheme();
-  const user = useUser();
+  const user: ContextProps = useUser();
 
-  const router = useRouter();
+  useEffect(() => {
+    if (!user) return;
+
+    if (user.signedIn()) {
+      router.replace("/connect/");
+    } else if (!user.signedIn()) {
+      router.replace("/(auth)");
+    }
+  }, [user]);
 
   return (
     <AuthContextProvider>
-      <Stack
-        screenOptions={{
-          headerShown: false,
-          contentStyle:
-            colorscheme === "dark"
-              ? { backgroundColor: "#000" }
-              : { backgroundColor: "#333" },
-        }}
-      />
+      <Slot />
     </AuthContextProvider>
   );
 };

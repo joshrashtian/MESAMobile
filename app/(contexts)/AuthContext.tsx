@@ -14,6 +14,7 @@ export interface ContextProps {
   user: User | undefined;
   userData: UserData | undefined;
   signOut: () => void;
+  signedIn: () => boolean;
 }
 
 export type UserData = {
@@ -34,11 +35,7 @@ export type UserData = {
   ];
 };
 
-export const AuthContext = createContext({
-  user: undefined,
-  data: undefined,
-  signOut: () => {},
-});
+export const AuthContext = createContext<any>(null);
 
 export const AuthContextProvider = ({
   children,
@@ -59,6 +56,9 @@ export const AuthContextProvider = ({
         supabase.auth.signOut();
         setUser(undefined);
         setUserData(undefined);
+      },
+      signedIn: () => {
+        return !!user;
       },
     };
   }, [user, userData]);
@@ -93,19 +93,27 @@ export const AuthContextProvider = ({
     setUserData(data);
   };
 
-  const { data } = supabase.auth.onAuthStateChange((event, session) => {
-    if (event === "SIGNED_IN") {
-      router.push("/connect/");
-    } else if (event === "SIGNED_OUT") {
-      router.push("/");
-    } else if (event === "PASSWORD_RECOVERY") {
-      // handle password recovery event
-    } else if (event === "TOKEN_REFRESHED") {
-      // handle token refreshed event
-    } else if (event === "USER_UPDATED") {
-      // handle user updated event
-    }
-  });
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        router.replace("/connect/");
+      } else if (event === "SIGNED_OUT") {
+        router.replace("/(auth)");
+      } else if (event === "PASSWORD_RECOVERY") {
+        // handle password recovery event
+      } else if (event === "TOKEN_REFRESHED") {
+        // handle token refreshed event
+      } else if (event === "USER_UPDATED") {
+        // handle user updated event
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     getUser();
