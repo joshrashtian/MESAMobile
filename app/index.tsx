@@ -7,6 +7,7 @@ import {
   View,
 } from "react-native";
 import React, { useEffect } from "react";
+import { Link } from "expo-router";
 
 const EntryPage = () => {
   return (
@@ -17,6 +18,9 @@ const EntryPage = () => {
           <Text style={{ color: "#050", fontWeight: "bold" }}>connect</Text> to{" "}
           <Text style={{ color: "#A20", fontWeight: "bold" }}>STEM.</Text>
         </Text>
+        <Link href="/(auth)/signin">
+          <Text>Let's Sign In</Text>
+        </Link>
       </View>
     </View>
   );
