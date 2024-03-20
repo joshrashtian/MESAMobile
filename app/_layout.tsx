@@ -12,7 +12,7 @@ const RootLayout = () => {
         contentStyle:
           colorscheme === "dark"
             ? { backgroundColor: "#000" }
-            : { backgroundColor: "#BBB" },
+            : { backgroundColor: "#333" },
       }}
     />
   );
