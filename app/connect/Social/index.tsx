@@ -20,8 +20,30 @@ import Animated, {
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
-  const [count, setCount] = useState<number | null>();
-  const [currentCount, setCurrentCount] = useState<number | null>();
+  const [count, setCount] = useState<number>();
+  const [currentCount, setCurrentCount] = useState<number>();
+
+  async function addMoreData() {
+    console.log(currentCount, count);
+    if (!currentCount || !count) return;
+
+    const amountToAdd = count > currentCount + 6 ? 6 : count - currentCount;
+
+    console.log("amount to add", currentCount + amountToAdd);
+    const { data, error } = await supabase
+      .from("posts")
+      .select()
+      .order("created_at", { ascending: false })
+      .range(currentCount + 1, currentCount + amountToAdd);
+
+    if (error || !postsRendered) {
+      console.log(error);
+      return;
+    }
+
+    setCurrentCount((e: number) => e + 6);
+    setPostsRendered([...postsRendered, ...data]);
+  }
 
   async function fetchData() {
     const {
@@ -32,7 +54,7 @@ const SocialHome = () => {
       .from("posts")
       .select("*", { count: "exact" })
       .order("created_at", { ascending: false })
-      .range(0, 6);
+      .range(0, 5);
 
     if (error) {
       console.log(error.message);
@@ -41,7 +63,7 @@ const SocialHome = () => {
 
     setPostsRendered(data);
     setCount(NewCount);
-    setCurrentCount(NewCount);
+    setCurrentCount(5);
   }
   useEffect(() => {
     fetchData();
@@ -61,10 +83,13 @@ const SocialHome = () => {
               return null;
           }
         }}
+        onEndReached={() => {
+          addMoreData();
+        }}
         style={{ zIndex: 0 }}
       />
       <Animated.View
-        style={styles.add}
+        style={[styles.add, {}]}
         entering={FadeInDown.easing(Easing.circle)}
       >
         <Ionicons name="add-sharp" color="#Fff" size={20} />
