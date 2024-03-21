@@ -45,6 +45,7 @@ const SignIn = () => {
             onChangeText={(e) => {
               setEmail(e);
             }}
+            autoCapitalize="none"
           />
         </LinearGradient>
         <LinearGradient
@@ -57,6 +58,8 @@ const SignIn = () => {
             onChangeText={(e) => {
               setPassword(e);
             }}
+            secureTextEntry={true}
+            autoCapitalize="none"
           />
         </LinearGradient>
         <TouchableOpacity

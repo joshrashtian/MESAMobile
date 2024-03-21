@@ -12,7 +12,7 @@ import { useRouter } from "expo-router";
 
 export interface ContextProps {
   user: User | undefined;
-  userData: UserData | undefined;
+  data: UserData | undefined;
   signOut: () => void;
   signedIn: () => boolean;
 }

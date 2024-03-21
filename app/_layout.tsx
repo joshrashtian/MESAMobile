@@ -1,5 +1,5 @@
 import { View, Text, Appearance, useColorScheme } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { router, Slot, Stack, useRouter } from "expo-router";
 import {
   AuthContextProvider,
@@ -7,27 +7,36 @@ import {
   UserData,
   useUser,
 } from "./(contexts)/AuthContext";
-import ConnectLayout from "./connect/_layout";
-import AuthStack from "./(auth)/_layout";
+import { useFonts } from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
 const RootLayout = () => {
+  SplashScreen.preventAutoHideAsync();
+
   const colorscheme = useColorScheme();
   const user: ContextProps = useUser();
 
-  useEffect(() => {
-    if (!user) return;
+  // prettier-ignore
+  const [fontsLoaded, fontLoadError] = useFonts({
+    'eudoxus': require("../assets/fonts/EudoxusSans-Medium.ttf"),
+  });
 
-    if (user.signedIn()) {
-      router.replace("/connect/");
-    } else if (!user.signedIn()) {
-      router.replace("/(auth)");
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync();
     }
-  }, [user]);
+  }, [fontsLoaded]);
+
+  if (!fontsLoaded) {
+    return null;
+  }
 
   return (
-    <AuthContextProvider>
-      <Slot />
-    </AuthContextProvider>
+    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+      <AuthContextProvider>
+        <Slot />
+      </AuthContextProvider>
+    </View>
   );
 };
 
