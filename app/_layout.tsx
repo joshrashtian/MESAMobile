@@ -19,6 +19,7 @@ const RootLayout = () => {
   // prettier-ignore
   const [fontsLoaded, fontLoadError] = useFonts({
     'eudoxus': require("../assets/fonts/EudoxusSans-Medium.ttf"),
+    'mono': require("../assets/fonts/JetBrainsMono-Medium.ttf")
   });
 
   const onLayoutRootView = useCallback(async () => {

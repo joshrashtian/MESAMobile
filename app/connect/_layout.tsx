@@ -41,7 +41,7 @@ const ConnectLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="Social/index"
+        name="Social"
         options={{
           title: "Activity",
           tabBarIcon: ({ focused }) => (
