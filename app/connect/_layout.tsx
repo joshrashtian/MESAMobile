@@ -54,7 +54,7 @@ const ConnectLayout = () => {
         }}
       />
       <Tabs.Screen
-        name="Event/index"
+        name="Event"
         options={{
           title: "Events",
           tabBarIcon: ({ focused }) => (

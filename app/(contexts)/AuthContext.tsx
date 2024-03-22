@@ -35,7 +35,17 @@ export type UserData = {
   ];
 };
 
-export const AuthContext = createContext<any>(null);
+export const AuthContext = createContext<ContextProps>({
+  user: undefined,
+  data: undefined,
+  signOut: () => {
+    console.log("Signing out");
+    supabase.auth.signOut();
+  },
+  signedIn: () => {
+    return false;
+  },
+});
 
 export const AuthContextProvider = ({
   children,
