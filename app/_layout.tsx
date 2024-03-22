@@ -9,6 +9,7 @@ import {
 } from "./(contexts)/AuthContext";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
@@ -33,11 +34,11 @@ const RootLayout = () => {
   }
 
   return (
-    <View onLayout={onLayoutRootView} style={{ flex: 1 }}>
+    <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
       <AuthContextProvider>
         <Slot />
       </AuthContextProvider>
-    </View>
+    </GestureHandlerRootView>
   );
 };
 

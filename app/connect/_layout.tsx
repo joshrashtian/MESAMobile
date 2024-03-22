@@ -53,6 +53,19 @@ const ConnectLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="Event/index"
+        options={{
+          title: "Events",
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="calendar-number"
+              size={24}
+              color={focused ? "#f00" : "#aaa"}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 };

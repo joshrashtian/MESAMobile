@@ -5,6 +5,7 @@ import {
   Platform,
   FlatList,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../supabase";
@@ -20,12 +21,13 @@ import Animated, {
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
-  const [count, setCount] = useState<number>();
+  const [count, setCount] = useState<number | null>(0);
   const [currentCount, setCurrentCount] = useState<number>();
 
   async function addMoreData() {
-    console.log(currentCount, count);
     if (!currentCount || !count) return;
+
+    if (currentCount === count + 1) return;
 
     const amountToAdd = count > currentCount + 6 ? 6 : count - currentCount;
 
@@ -41,7 +43,7 @@ const SocialHome = () => {
       return;
     }
 
-    setCurrentCount((e: number) => e + 6);
+    setCurrentCount((e: any) => e + 6);
     setPostsRendered([...postsRendered, ...data]);
   }
 
@@ -73,10 +75,21 @@ const SocialHome = () => {
       <Text style={styles.heading}>Activity Going On</Text>
       <FlatList
         data={postsRendered}
+        keyExtractor={(item) => item.id.toString()}
+        ListEmptyComponent={() => <ActivityIndicator />}
+        ListFooterComponent={() =>
+          currentCount !== count + 1 && (
+            <ActivityIndicator style={{ padding: 5 }} />
+          )
+        }
         renderItem={(post) => {
           switch (post.item.type) {
             case "post":
-              return <Post post={post.item} />;
+              return (
+                <Animated.View entering={FadeInUp}>
+                  <Post post={post.item} />
+                </Animated.View>
+              );
             case "wim":
               return <Wim post={post.item} />;
             default:
