@@ -38,9 +38,9 @@ const EventHome = () => {
     const { data: FetchedData, error } = await supabase
       .from("events")
       .select()
-      .textSearch("name", finalQuery)
+      //.textSearch("name", finalQuery)
       .range(0, 4)
-      //.gte("start", new Date(Date.now()).toISOString())
+      .gte("start", new Date(Date.now()).toISOString())
       .order("start");
 
     if (error) {

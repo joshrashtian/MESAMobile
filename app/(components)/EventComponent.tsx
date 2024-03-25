@@ -13,6 +13,10 @@ export type EventType = {
   tags: string[];
   type: string;
   creator: string;
+  image: {
+    url: string;
+    creator: string;
+  };
 };
 
 const EventComponent = ({
@@ -37,10 +41,17 @@ const EventComponent = ({
       colors={[color, "transparent"]}
     >
       <Image
-        src="https://placehold.co/600x400/png"
-        style={{ width: "100%", height: "50%" }}
+        src={event?.image?.url}
+        style={{
+          width: "100%",
+          height: "50%",
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
+        }}
       />
-      <View style={{ padding: 24 }}>
+      <View
+        style={{ padding: 24, justifyContent: "center", alignItems: "center" }}
+      >
         <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
         <Text style={{ color: "#888" }}>
           {event.desc?.slice(0, 100)}
