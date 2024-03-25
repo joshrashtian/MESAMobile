@@ -15,7 +15,10 @@ const LayoutEvents = () => {
       }}
     >
       <Stack.Screen name="index" options={{ title: "Event Home" }} />
-      <Stack.Screen name="[id]" options={{ title: "Event Modal" }} />
+      <Stack.Screen
+        name="Modal/[id]"
+        options={{ title: "Event Modal", presentation: "modal" }}
+      />
     </Stack>
   );
 };

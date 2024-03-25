@@ -1,4 +1,10 @@
-import { Image, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
@@ -27,46 +33,42 @@ const EventComponent = ({
   event: EventType;
   color: string;
 }) => {
+  const window = useWindowDimensions();
+
   return (
-    <LinearGradient
-      style={{
-        backgroundColor: "#FFF",
-        height: 190,
-        justifyContent: "space-between",
-        borderRadius: 20,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 1,
-        shadowRadius: 2,
-      }}
-      colors={[color, "transparent"]}
-    >
-      <Image
-        src={event?.image?.url}
+    <Link href={`/connect/Event/Modal/${event.id}`}>
+      <LinearGradient
         style={{
-          width: "100%",
-          height: "50%",
-          borderTopLeftRadius: 20,
-          borderTopRightRadius: 20,
+          backgroundColor: "#FFF",
+          height: 190,
+          marginHorizontal: 20,
+          width: window.width - 40,
+          justifyContent: "space-between",
+          borderRadius: 20,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 1 },
+          shadowOpacity: 1,
+          shadowRadius: 2,
         }}
-      />
-      <View
-        style={{ padding: 24, justifyContent: "center", alignItems: "center" }}
+        colors={[color, "transparent"]}
       >
-        <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
-        <Text style={{ color: "#888" }}>
-          {event.desc?.slice(0, 100)}
-          <Text style={{ color: "#aaa" }}>
-            {event.desc?.length > 90 && "..."}
-          </Text>
-        </Text>
-      </View>
-      <Link href={`/connect/Event/${event.id}`}>
         <Image
-          src="https://placehold.co/600x400/png"
-          style={{ width: "100%", height: "50%" }}
+          src={event?.image?.url}
+          style={{
+            width: "100%",
+            height: "50%",
+            borderTopLeftRadius: 20,
+            borderTopRightRadius: 20,
+          }}
         />
-        <View style={{ padding: 24 }}>
+        <View
+          style={{
+            padding: 24,
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
           <Text style={{ color: "#888" }}>
             {event.desc?.slice(0, 100)}
@@ -75,8 +77,8 @@ const EventComponent = ({
             </Text>
           </Text>
         </View>
-      </Link>
-    </LinearGradient>
+      </LinearGradient>
+    </Link>
   );
 };
 
