@@ -1,6 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
+import { Link } from "expo-router";
 
 export type EventType = {
   id: string;
@@ -36,19 +37,21 @@ const EventComponent = ({
       }}
       colors={[color, "transparent"]}
     >
-      <Image
-        src="https://placehold.co/600x400/png"
-        style={{ width: "100%", height: "50%" }}
-      />
-      <View style={{ padding: 24 }}>
-        <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
-        <Text style={{ color: "#888" }}>
-          {event.desc?.slice(0, 100)}
-          <Text style={{ color: "#aaa" }}>
-            {event.desc?.length > 90 && "..."}
+      <Link href={`/connect/Event/${event.id}`}>
+        <Image
+          src="https://placehold.co/600x400/png"
+          style={{ width: "100%", height: "50%" }}
+        />
+        <View style={{ padding: 24 }}>
+          <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
+          <Text style={{ color: "#888" }}>
+            {event.desc?.slice(0, 100)}
+            <Text style={{ color: "#aaa" }}>
+              {event.desc?.length > 90 && "..."}
+            </Text>
           </Text>
-        </Text>
-      </View>
+        </View>
+      </Link>
     </LinearGradient>
   );
 };

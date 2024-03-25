@@ -13,7 +13,10 @@ const LayoutEvents = () => {
           backgroundColor: "#f9f9f9",
         },
       }}
-    />
+    >
+      <Stack.Screen name="index" options={{ title: "Event Home" }} />
+      <Stack.Screen name="[id]" options={{ title: "Event Modal" }} />
+    </Stack>
   );
 };
 
