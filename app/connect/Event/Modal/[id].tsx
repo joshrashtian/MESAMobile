@@ -6,21 +6,26 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { useLocalSearchParams } from "expo-router";
-import { EventType } from "../../../(components)/EventComponent";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import EventComponent, {
+  EventType,
+} from "../../../(components)/EventComponent";
 import { supabase } from "../../../../supabase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
 import { useUser } from "../../../(contexts)/AuthContext";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetBackgroundProps } from "@gorhom/bottom-sheet";
+import { addInterest, onInterestLost } from "../EventInterests";
 
 const EventModal = () => {
   const [event, setEvent] = useState<EventType>();
+  const [state, setState] = useState<number>(1);
   const { id } = useLocalSearchParams();
   const points = useMemo(() => ["30%", "50%"], []);
   const bottomSheetRef = useRef<BottomSheet>();
   const user = useUser();
+  const router = useRouter();
 
   const backgroundBottomSheet = useCallback(
     (props: any) => (
@@ -46,10 +51,48 @@ const EventModal = () => {
       }
       setEvent(data[0]);
     };
+
+    const fetchInterest = async () => {
+      const { data, error } = await supabase
+        .from("eventinterest")
+        .select()
+        .eq("user_id", user.user.id)
+        .eq("event_id", id);
+
+      if (error) {
+        console.error(error);
+        return;
+      }
+      console.log(data);
+
+      if (data.length !== 0) setState(1);
+      else setState(0);
+    };
+
+    fetchInterest();
     fetchingData();
   }, []);
 
   if (!event) return <ActivityIndicator />;
+
+  const createInterest = async () => {
+    const { error } = await addInterest(user, event.id);
+    if (error) {
+      console.log(error);
+      return;
+    }
+    setState(1);
+    bottomSheetRef.current?.expand();
+  };
+  const lossOfInterest = async () => {
+    const { error } = await onInterestLost(user, event.id);
+    if (!error) {
+      bottomSheetRef.current?.close();
+      router.dismissAll();
+    } else {
+      console.log(error);
+    }
+  };
 
   return (
     <View
@@ -64,7 +107,7 @@ const EventModal = () => {
               top: 0,
               left: 0,
             }}
-            src={event.image.url}
+            src={event?.image?.url}
           />
         )}
         <View style={{ padding: 20, gap: 10, flexDirection: "column" }}>
@@ -91,7 +134,7 @@ const EventModal = () => {
         <TouchableOpacity
           style={{ width: "100%", height: 48, padding: 3 }}
           onPress={() => {
-            bottomSheetRef.current?.expand();
+            state === 1 ? bottomSheetRef.current?.expand() : createInterest();
           }}
         >
           <LinearGradient
@@ -110,7 +153,7 @@ const EventModal = () => {
             colors={["rgb(37 99 235)", "rgb(67 56 202)"]}
           >
             <Text style={{ fontFamily: "eudoxus", color: "#fff" }}>
-              I'M INTERESTED
+              {state === 0 ? "I'M INTERESTED" : "VIEW DETAILS"}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -130,10 +173,46 @@ const EventModal = () => {
         index={-1}
         enablePanDownToClose={true}
       >
-        <View style={{ padding: 10 }}>
+        <View style={{ padding: 10, gap: 20 }}>
           <Text style={{ color: "#fff", fontFamily: "eudoxus", fontSize: 20 }}>
-            Added {event.name} to your event list!
+            Added to your event list!
           </Text>
+          <View
+            style={{
+              backgroundColor: "#fff",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 0 },
+              shadowOpacity: 0.7,
+              shadowRadius: 3,
+            }}
+          >
+            <Image
+              src={event?.image?.url}
+              style={{ width: "100%", height: 52 }}
+            />
+            <Text style={{ fontFamily: "eudoxus", padding: 8 }}>
+              {event.name}
+            </Text>
+          </View>
+
+          <View style={{ gap: 3.5 }}>
+            <TouchableOpacity style={{ backgroundColor: "#fff", padding: 10 }}>
+              <Text style={{ fontFamily: "eudoxus" }}>View Your Events</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                lossOfInterest();
+              }}
+              style={{ backgroundColor: "#fff", padding: 10 }}
+            >
+              <Text style={{ fontFamily: "eudoxus" }}>
+                Remove from Eventlist
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ backgroundColor: "#fff", padding: 10 }}>
+              <Text style={{ fontFamily: "eudoxus" }}>Return to Events</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </BottomSheet>
     </View>
