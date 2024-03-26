@@ -2,6 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { ContextProps, useUser } from "../(contexts)/AuthContext";
 import { Link } from "expo-router";
+import UpcomingEvent from "../(components)/FrontPage/UpcomingEvent";
 
 const ConnectHome = () => {
   const user: ContextProps = useUser();
@@ -26,6 +27,7 @@ const ConnectHome = () => {
       >
         <Text>Sign Out</Text>
       </TouchableOpacity>
+      <UpcomingEvent />
     </View>
   );
 };
@@ -36,7 +38,7 @@ const styles = StyleSheet.create({
   core: {
     flex: 1,
     justifyContent: "center",
-    flexDirection: "column-reverse",
+    gap: 10,
     backgroundColor: "#E65C4C",
     padding: 10,
   },

@@ -116,9 +116,7 @@ const EventModal = () => {
           </Text>
           <Text style={styles.secondary}>{event.desc}</Text>
           <Text style={styles.date}>
-            🕰️ {new Date(event.start).getMonth()}/
-            {new Date(event.start).getDay()}/
-            {new Date(event.start).getFullYear()} at{" "}
+            🕰️ {new Date(event.start).toLocaleDateString()} at{" "}
             {new Date(event.start).getHours() < 10
               ? `0${new Date(event.start).getHours()}`
               : new Date(event.start).getHours()}
@@ -196,7 +194,13 @@ const EventModal = () => {
           </View>
 
           <View style={{ gap: 3.5 }}>
-            <TouchableOpacity style={{ backgroundColor: "#fff", padding: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                router.dismiss();
+                router.push("/connect/Event/EventList");
+              }}
+              style={{ backgroundColor: "#fff", padding: 10 }}
+            >
               <Text style={{ fontFamily: "eudoxus" }}>View Your Events</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -209,7 +213,12 @@ const EventModal = () => {
                 Remove from Eventlist
               </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ backgroundColor: "#fff", padding: 10 }}>
+            <TouchableOpacity
+              onPress={() => {
+                router.dismiss();
+              }}
+              style={{ backgroundColor: "#fff", padding: 10 }}
+            >
               <Text style={{ fontFamily: "eudoxus" }}>Return to Events</Text>
             </TouchableOpacity>
           </View>
