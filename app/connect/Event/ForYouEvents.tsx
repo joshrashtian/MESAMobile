@@ -12,36 +12,44 @@ import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
 import { getEvents } from "./fetchEvents";
 
-const EventList = () => {
+const ForYouEvents = () => {
   const [events, setEvents] = useState<EventType[]>();
+  const [loading, setLoading] = useState<boolean>(true);
   const { user, data } = useUser();
 
   async function fetchEvents() {
-    const { data: EventInterests, error: InterestErr } = await supabase
-      .from("eventinterest")
-      .select("event_id, id")
-      .eq("user_id", user?.id);
+    if (!data?.boxlist) return;
 
-    if (InterestErr) {
-      console.log(InterestErr);
-      return;
-    }
+    let query: any = [];
 
-    const interests = EventInterests.map((e) => `${e.event_id}`);
+    data.boxlist.map((e: any) => {
+      if (e.type === "skills") {
+        query.push(e.skills);
+      }
+    });
 
-    const { data: FetchedData, error } = await supabase
+    if (!query[0]) return;
+    const finalQuery = query[0].join(" or");
+
+    console.log(finalQuery);
+    const {
+      data: Events,
+      count,
+      error,
+    } = await supabase
       .from("events")
-      .select()
-      .in("id", interests)
-      .gte("start", new Date(Date.now()).toISOString())
-      .order("start");
+      .select("*", { count: "exact" })
+      .textSearch("name", finalQuery, {
+        type: "websearch",
+      });
+    //.gte("start", new Date(Date.now()).toISOString());
 
     if (error) {
       console.log(error);
       return;
     }
-
-    setEvents(FetchedData);
+    setEvents(Events);
+    setLoading(false);
   }
 
   //
@@ -50,11 +58,10 @@ const EventList = () => {
     fetchEvents();
   }, []);
 
+  if (loading) return <ActivityIndicator />;
   return (
     <View style={styles.core}>
-      <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>
-        Your Saved Events
-      </Text>
+      <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>Recommended</Text>
       <FlatList
         data={events}
         pagingEnabled
@@ -63,13 +70,15 @@ const EventList = () => {
         )}
         ItemSeparatorComponent={() => <View style={styles.between} />}
         keyExtractor={(item) => item.id.toString()}
-        ListEmptyComponent={() => <ActivityIndicator />}
+        ListEmptyComponent={() => (
+          <Text>It looks a little empty around here...</Text>
+        )}
       />
     </View>
   );
 };
 
-export default EventList;
+export default ForYouEvents;
 
 const styles = StyleSheet.create({
   core: {

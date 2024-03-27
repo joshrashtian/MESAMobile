@@ -55,8 +55,8 @@ const EventModal = () => {
     const fetchInterest = async () => {
       const { data, error } = await supabase
         .from("eventinterest")
-        .select()
-        .eq("user_id", user.user.id)
+        .select("user_id")
+        .eq("user_id", user.user?.id)
         .eq("event_id", id);
 
       if (error) {
@@ -155,6 +155,11 @@ const EventModal = () => {
             </Text>
           </LinearGradient>
         </TouchableOpacity>
+        {event.image && (
+          <Text style={{ fontFamily: "eudoxus" }}>
+            *Photo by {event.image.creator}
+          </Text>
+        )}
       </View>
       <BottomSheet
         backgroundComponent={backgroundBottomSheet}

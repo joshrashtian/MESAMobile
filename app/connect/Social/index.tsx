@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   useAnimatedValue,
   useWindowDimensions,
+  RefreshControl,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../supabase";
@@ -25,12 +26,14 @@ import Animated, {
   withSpring,
   withTiming,
 } from "react-native-reanimated";
+import { Link, router } from "expo-router";
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
   const [count, setCount] = useState<number | null>(0);
   const [currentCount, setCurrentCount] = useState<number>();
   const [addOpen, setAddOpen] = useState<boolean>(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const window = useWindowDimensions();
 
@@ -58,6 +61,7 @@ const SocialHome = () => {
   }
 
   async function fetchData() {
+    setRefreshing(true);
     const {
       data,
       error,
@@ -76,10 +80,42 @@ const SocialHome = () => {
     setPostsRendered(data);
     setCount(NewCount);
     setCurrentCount(5);
+    setRefreshing(false);
   }
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("posts channel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "posts",
+          //filter: `userid=eq.${user.user?.id}`
+        },
+        (payload) => {
+          if (payload.eventType === "DELETE") {
+            console.log(payload.old.id);
+            setPostsRendered((posts) =>
+              postsRendered?.filter((e) => e.id !== payload.old.id)
+            );
+            setCount((count) => count && count + 1);
+          }
+          if (payload.eventType === "INSERT") {
+            setPostsRendered((posts: any) => [payload.new, ...posts]);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [supabase]);
 
   const toggleAdd = () => {
     setAddOpen(!addOpen);
@@ -134,6 +170,14 @@ const SocialHome = () => {
         ListFooterComponent={() =>
           currentCount !== count && <ActivityIndicator style={{ padding: 5 }} />
         }
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              fetchData();
+            }}
+          />
+        }
         renderItem={(post) => {
           switch (post.item.type) {
             case "post":
@@ -184,8 +228,13 @@ const SocialHome = () => {
         ]}
       >
         <LinearGradient
-          style={{ width: 100, height: 40, borderRadius: 5 }}
-          colors={["#09d", "#08c"]}
+          style={{
+            width: 100,
+            height: 40,
+
+            borderRadius: 5,
+          }}
+          colors={["#eee", "#dedede"]}
         >
           <TouchableOpacity
             style={{
@@ -194,8 +243,19 @@ const SocialHome = () => {
               justifyContent: "center",
               alignItems: "center",
             }}
+            onPress={() => router.push("/connect/Social/Creator/post")}
           >
-            <Text>Wim</Text>
+            <Text
+              style={{
+                fontFamily: "eudoxus",
+                fontSize: 16,
+                color: "#000",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Post
+            </Text>
           </TouchableOpacity>
         </LinearGradient>
       </Animated.View>

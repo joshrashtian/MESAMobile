@@ -16,6 +16,7 @@ const Layout = () => {
     >
       <Stack.Screen name="index" options={{ title: "Social Home" }} />
       <Stack.Screen name="Post/[id]" options={{ presentation: "modal" }} />
+      <Stack.Screen name="Creator/post" options={{ presentation: "modal" }} />
     </Stack>
   );
 };

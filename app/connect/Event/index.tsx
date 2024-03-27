@@ -1,6 +1,7 @@
 import {
   ActivityIndicator,
   FlatList,
+  Pressable,
   RefreshControl,
   StyleSheet,
   Text,
@@ -11,34 +12,17 @@ import { supabase } from "../../../supabase";
 import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
 import { getEvents } from "./fetchEvents";
+import { Link } from "expo-router";
+import Animated from "react-native-reanimated";
 
 const EventHome = () => {
   const [events, setEvents] = useState<EventType[]>();
   const { data } = useUser();
 
   async function fetchEvents() {
-    if (!data?.boxlist) return;
-
-    let query: any = [];
-
-    data.boxlist.map((e: any) => {
-      if (e.type === "skills") {
-        query.push(e.skills);
-      }
-    });
-
-    if (!query[0]) return;
-    const finalQuery = query[0]
-      .map((e: string) => {
-        e.toString().trim();
-        return `' ${e} '`;
-      })
-      .join(" | ");
-
     const { data: FetchedData, error } = await supabase
       .from("events")
       .select()
-      //.textSearch("name", finalQuery)
       .range(0, 4)
       .gte("start", new Date(Date.now()).toISOString())
       .order("start");
@@ -48,8 +32,6 @@ const EventHome = () => {
       return;
     }
 
-    console.log(FetchedData);
-
     setEvents(FetchedData);
   }
 
@@ -57,14 +39,51 @@ const EventHome = () => {
     fetchEvents();
   }, []);
 
+  const buttons = [
+    {
+      name: "Saved Events",
+      link: "/connect/Event/EventList",
+    },
+    {
+      name: "For You",
+      link: "/connect/Event/ForYouEvents",
+    },
+  ];
+
   return (
     <View style={styles.core}>
       <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>Events</Text>
+      <View style={{ flexDirection: "row" }}>
+        {buttons.map((e) => (
+          <Link
+            href={e.link}
+            style={{
+              width: "33%",
+            }}
+            onPress={() => {}}
+          >
+            <Animated.View
+              style={{
+                backgroundColor: "#eee",
+                padding: 15,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 15,
+              }}
+            >
+              <Text>{e.name}</Text>
+            </Animated.View>
+          </Link>
+        ))}
+      </View>
       <FlatList
         data={events}
         pagingEnabled
+        showsVerticalScrollIndicator={false}
         renderItem={(e) => (
-          <EventComponent color={"rgba(0,200,300,0.3)"} event={e.item} />
+          <View style={{ padding: 2.5 }}>
+            <EventComponent color={"rgba(300,200,200,0.3)"} event={e.item} />
+          </View>
         )}
         ItemSeparatorComponent={() => <View style={styles.between} />}
         keyExtractor={(item) => item.id.toString()}
@@ -80,11 +99,10 @@ const styles = StyleSheet.create({
   core: {
     flex: 1,
     paddingTop: 70,
-    justifyContent: "center",
     flexDirection: "column",
     backgroundColor: "#f9f9f9",
     padding: 10,
-    gap: 20,
+    gap: 10,
     zIndex: 10,
   },
   between: {

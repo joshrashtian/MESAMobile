@@ -9,6 +9,21 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { Link } from "expo-router";
 
+export const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "June",
+  "July",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
 export type EventType = {
   id: string;
   created_at: any;
@@ -36,19 +51,22 @@ const EventComponent = ({
   const window = useWindowDimensions();
 
   return (
-    <Link href={`/connect/Event/Modal/${event.id}`}>
+    <Link
+      href={`/connect/Event/Modal/${event.id}`}
+      style={{
+        shadowColor: "#777",
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.5,
+        shadowRadius: 1,
+      }}
+    >
       <LinearGradient
         style={{
           backgroundColor: "#FFF",
-          height: 190,
-          marginHorizontal: 20,
-          width: window.width - 40,
           justifyContent: "space-between",
           borderRadius: 20,
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 1 },
-          shadowOpacity: 1,
-          shadowRadius: 2,
+          height: 240,
+          width: window.width - 20,
         }}
         colors={[color, "transparent"]}
       >
@@ -63,18 +81,25 @@ const EventComponent = ({
         />
         <View
           style={{
-            padding: 24,
+            padding: 16,
             width: "100%",
             justifyContent: "center",
-            alignItems: "center",
           }}
         >
-          <Text style={{ fontWeight: "600", fontSize: 18 }}>{event.name}</Text>
+          <Text
+            style={{ fontWeight: "600", fontSize: 18, fontFamily: "eudoxus" }}
+          >
+            {event.name}
+          </Text>
           <Text style={{ color: "#888" }}>
             {event.desc?.slice(0, 100)}
             <Text style={{ color: "#aaa" }}>
               {event.desc?.length > 90 && "..."}
             </Text>
+          </Text>
+          <Text style={{ fontFamily: "mono" }}>
+            {months[new Date(event.start).getMonth()]}{" "}
+            {new Date(event.start).getDate()}
           </Text>
         </View>
       </LinearGradient>

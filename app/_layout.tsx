@@ -15,7 +15,6 @@ const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
 
   const colorscheme = useColorScheme();
-  const user: ContextProps = useUser();
 
   // prettier-ignore
   const [fontsLoaded, fontLoadError] = useFonts({
