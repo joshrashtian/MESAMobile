@@ -23,7 +23,7 @@ export type UserData = {
   username: string;
   role: string;
   real_name: string;
-  avatar_url: string;
+  avatar_url?: string;
   classes?: JSON;
   major?: string;
   boxlist: object[];
@@ -77,20 +77,16 @@ export const AuthContextProvider = ({
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
     if (user) {
       setUser(user);
-      getUserData();
       console.log("signed in as ", user.email);
     }
-  };
-
-  const getUserData = async () => {
-    const userId = (await supabase.auth.getUser()).data.user?.id;
 
     const { data, error } = await supabase
       .from("profiles")
       .select()
-      .eq("id", userId)
+      .eq("id", user?.id)
       .single();
 
     if (error) {
@@ -99,7 +95,6 @@ export const AuthContextProvider = ({
     }
 
     console.log("successfully grabbed data");
-    router.push("/connect/");
     setUserData(data);
   };
 
@@ -107,6 +102,10 @@ export const AuthContextProvider = ({
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((event, session) => {
+      console.log(event, session?.user.id);
+      if (event === "INITIAL_SESSION") {
+        router.replace("/connect/");
+      }
       if (event === "SIGNED_IN") {
         router.replace("/connect/");
       } else if (event === "SIGNED_OUT") {

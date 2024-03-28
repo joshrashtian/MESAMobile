@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { ContextProps, useUser } from "../(contexts)/AuthContext";
 import { Link } from "expo-router";
@@ -11,15 +11,18 @@ const ConnectHome = () => {
 
   return (
     <View style={styles.core}>
-      <Text style={styles.welcometext}>
-        Good{" "}
-        {timeNow.getHours() < 12
-          ? "morning"
-          : timeNow.getHours() < 17
-          ? "afternoon"
-          : "evening"}
-        , {user.data?.real_name}
-      </Text>
+      <View style={{ flexDirection: "row" }}>
+        <Image src={user.data?.avatar_url} />
+        <Text style={styles.welcometext}>
+          Good{" "}
+          {timeNow.getHours() < 12
+            ? "morning"
+            : timeNow.getHours() < 17
+            ? "afternoon"
+            : "evening"}
+          , {user.data?.real_name}
+        </Text>
+      </View>
       <TouchableOpacity
         onPress={() => {
           user.signOut();

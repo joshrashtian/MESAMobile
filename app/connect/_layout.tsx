@@ -1,10 +1,12 @@
-import { View, Text } from "react-native";
+import { View, Text, Image } from "react-native";
 import React from "react";
 import { Stack, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useUser } from "../(contexts)/AuthContext";
 
 const ConnectLayout = () => {
+  const user = useUser();
   return (
     <Tabs
       screenOptions={{
@@ -51,6 +53,13 @@ const ConnectLayout = () => {
               color={focused ? "#f00" : "#aaa"}
             />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="Profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ focused }) => <Image src={user.data?.avatar_url} />,
         }}
       />
       <Tabs.Screen
