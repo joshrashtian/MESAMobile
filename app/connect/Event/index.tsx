@@ -52,7 +52,6 @@ const EventHome = () => {
 
   return (
     <View style={styles.core}>
-      <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>Events</Text>
       <View style={{ flexDirection: "row" }}>
         {buttons.map((e) => (
           <Link
@@ -98,7 +97,7 @@ export default EventHome;
 const styles = StyleSheet.create({
   core: {
     flex: 1,
-    paddingTop: 70,
+
     flexDirection: "column",
     backgroundColor: "#f9f9f9",
     padding: 10,

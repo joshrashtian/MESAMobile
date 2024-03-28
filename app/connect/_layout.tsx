@@ -59,7 +59,24 @@ const ConnectLayout = () => {
         name="Profile"
         options={{
           title: "Profile",
-          tabBarIcon: ({ focused }) => <Image src={user.data?.avatar_url} />,
+          tabBarIcon: ({ focused }) => (
+            <Image
+              src={
+                user.data?.avatar_url
+                  ? user.data?.avatar_url
+                  : "https://gnmpzioggytlqzekuyuo.supabase.co/storage/v1/object/public/avatars/UserIcon.png"
+              }
+              style={{
+                width: 40,
+                height: 40,
+                borderRadius: 200,
+                position: "absolute",
+                borderWidth: focused ? 1 : 0,
+                borderColor: focused ? "#f00" : "#aaa",
+              }}
+            />
+          ),
+          tabBarLabel: ({ children, focused }) => <></>,
         }}
       />
       <Tabs.Screen
@@ -69,6 +86,19 @@ const ConnectLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="calendar-number"
+              size={24}
+              color={focused ? "#f00" : "#aaa"}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="Learning"
+        options={{
+          title: "Lab",
+          tabBarIcon: ({ focused }) => (
+            <Ionicons
+              name="library"
               size={24}
               color={focused ? "#f00" : "#aaa"}
             />

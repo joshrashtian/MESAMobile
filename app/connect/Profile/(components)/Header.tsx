@@ -11,8 +11,15 @@ const Header = ({ user }: { user: UserData }) => {
   console.log(user.created_at);
   return (
     <View style={{ gap: 20 }}>
-      <View style={{ flexDirection: "row" }}>
-        <Image src={user?.avatar_url} />
+      <View style={{ flexDirection: "row", gap: 12 }}>
+        <Image
+          src={user?.avatar_url}
+          style={{
+            width: 64,
+            borderRadius: 200,
+            height: 64,
+          }}
+        />
         <View>
           <Text style={{ fontFamily: "eudoxus", fontSize: 26 }}>
             {user?.real_name}

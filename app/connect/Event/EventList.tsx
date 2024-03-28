@@ -74,7 +74,6 @@ export default EventList;
 const styles = StyleSheet.create({
   core: {
     flex: 1,
-    paddingTop: 70,
     justifyContent: "center",
     flexDirection: "column",
     backgroundColor: "#f9f9f9",
