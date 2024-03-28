@@ -4,6 +4,7 @@ import { Stack, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useUser } from "../(contexts)/AuthContext";
+import Animated, { ZoomIn, ZoomInRotate } from "react-native-reanimated";
 
 const ConnectLayout = () => {
   const user = useUser();
@@ -60,7 +61,8 @@ const ConnectLayout = () => {
         options={{
           title: "Profile",
           tabBarIcon: ({ focused }) => (
-            <Image
+            <Animated.Image
+              entering={ZoomInRotate.delay(1000).duration(500).springify()}
               src={
                 user.data?.avatar_url
                   ? user.data?.avatar_url

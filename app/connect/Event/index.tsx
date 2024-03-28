@@ -13,7 +13,7 @@ import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
 import { getEvents } from "./fetchEvents";
 import { Link } from "expo-router";
-import Animated from "react-native-reanimated";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 const EventHome = () => {
   const [events, setEvents] = useState<EventType[]>();
@@ -59,9 +59,10 @@ const EventHome = () => {
             style={{
               width: "33%",
             }}
-            onPress={() => {}}
+            key={e.link}
           >
             <Animated.View
+              entering={FadeInUp}
               style={{
                 backgroundColor: "#eee",
                 padding: 15,

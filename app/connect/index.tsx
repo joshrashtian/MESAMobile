@@ -11,6 +11,7 @@ import { ContextProps, useUser } from "../(contexts)/AuthContext";
 import { Link } from "expo-router";
 import UpcomingEvent from "../(components)/FrontPage/UpcomingEvent";
 import { Ionicons } from "@expo/vector-icons";
+import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 
 const ConnectHome = () => {
   const user: ContextProps = useUser();
@@ -37,7 +38,8 @@ const ConnectHome = () => {
             shadowRadius: 10,
           }}
         >
-          <Image
+          <Animated.Image
+            entering={FadeIn.delay(500).duration(400)}
             src={user.data?.avatar_url}
             style={{
               resizeMode: "cover",
@@ -47,15 +49,18 @@ const ConnectHome = () => {
             }}
           />
         </View>
-        <Text style={styles.welcometext}>
+        <Animated.Text
+          entering={FadeInUp.delay(800)}
+          style={styles.welcometext}
+        >
           Good{" "}
           {timeNow.getHours() < 12
             ? "morning"
             : timeNow.getHours() < 17
             ? "afternoon"
             : "evening"}
-          , {user.data?.real_name}
-        </Text>
+          , {user.user?.user_metadata?.real_name}
+        </Animated.Text>
       </View>
       <View
         style={{

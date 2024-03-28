@@ -1,6 +1,6 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -27,9 +27,9 @@ const LayoutEvents = () => {
         options={{
           title: "Events",
           headerRight: () => (
-            <TouchableOpacity>
+            <Link href="/connect/Event/CreateEvent/">
               <Ionicons name="add-sharp" size={24} />
-            </TouchableOpacity>
+            </Link>
           ),
         }}
       />
@@ -52,6 +52,10 @@ const LayoutEvents = () => {
         options={{
           title: "Your Saved Events",
         }}
+      />
+      <Stack.Screen
+        name="CreateEvent/index"
+        options={{ title: "Create Event" }}
       />
     </Stack>
   );
