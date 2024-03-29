@@ -77,7 +77,7 @@ export const AuthContextProvider = ({
     };
   }, [user, userData]);
 
-  const refetchUserDataWithId = async (id: string) => {
+  const refetchUserDataWithId = async (id: string | undefined) => {
     const { data, error } = await supabase
       .from("profiles")
       .select()

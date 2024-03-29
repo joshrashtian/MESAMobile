@@ -59,7 +59,10 @@ const ConnectHome = () => {
             : timeNow.getHours() < 17
             ? "afternoon"
             : "evening"}
-          , {user.user?.user_metadata?.real_name}
+          ,{" "}
+          {user.user?.user_metadata.real_name
+            ? user.user.user_metadata.real_name
+            : user.data?.real_name}
         </Animated.Text>
       </View>
       <View
