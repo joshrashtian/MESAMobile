@@ -15,6 +15,7 @@ export interface ContextProps {
   data: UserData | undefined;
   signOut: () => void;
   signedIn: () => boolean;
+  refreshUserData?: () => void;
 }
 
 export type UserData = {
@@ -70,32 +71,57 @@ export const AuthContextProvider = ({
       signedIn: () => {
         return !!user;
       },
+      refreshUserData: () => {
+        refetchUserData();
+      },
     };
   }, [user, userData]);
 
-  const getUser = async () => {
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+  const refetchUserDataWithId = async (id: string) => {
+    const { data, error } = await supabase
+      .from("profiles")
+      .select()
+      .eq("id", id)
+      .single();
 
-    if (user) {
-      setUser(user);
-      console.log("signed in as ", user.email);
-    }
+    console.log("successfully grabbed data");
+    console.log(!data);
+    setUserData(data);
+  };
 
+  const refetchUserData = async () => {
     const { data, error } = await supabase
       .from("profiles")
       .select()
       .eq("id", user?.id)
       .single();
 
-    if (error) {
-      console.log(error);
-      return;
-    }
-
     console.log("successfully grabbed data");
+    console.log(!data);
     setUserData(data);
+  };
+
+  const getUser = async () => {
+    const {
+      data: { user: LogInUser },
+    } = await supabase.auth.getUser();
+
+    if (LogInUser) {
+      setUser(LogInUser);
+
+      const { data, error } = await supabase
+        .from("profiles")
+        .select()
+        .eq("id", LogInUser.id)
+        .single();
+
+      console.log("successfully grabbed data");
+      console.log(data);
+      setUserData(data);
+    } else {
+      setUser(undefined);
+      setUserData(undefined);
+    }
   };
 
   useEffect(() => {
@@ -107,6 +133,7 @@ export const AuthContextProvider = ({
         router.replace("/connect/");
       }
       if (event === "SIGNED_IN") {
+        refetchUserDataWithId(session?.user.id);
         router.replace("/connect/");
       } else if (event === "SIGNED_OUT") {
         router.replace("/(auth)");

@@ -8,7 +8,6 @@ import Animated, {
 } from "react-native-reanimated";
 
 const Header = ({ user }: { user: UserData }) => {
-  console.log(user.created_at);
   return (
     <View style={{ gap: 20 }}>
       <View style={{ flexDirection: "row", gap: 12 }}>

@@ -5,9 +5,16 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useUser } from "../(contexts)/AuthContext";
 import Animated, { ZoomIn, ZoomInRotate } from "react-native-reanimated";
+import { supabase } from "../../supabase";
+import Loading from "../Loading";
 
 const ConnectLayout = () => {
   const user = useUser();
+
+  if (!user.data) {
+    return <Loading />;
+  }
+
   return (
     <Tabs
       screenOptions={{
@@ -16,7 +23,10 @@ const ConnectLayout = () => {
         tabBarActiveTintColor: "#f00",
         tabBarLabel: ({ children, focused }) => (
           <Text
-            style={{ color: focused ? "#f00" : "#aaa", fontFamily: "eudoxus" }}
+            style={{
+              color: focused ? "#f00" : "#aaa",
+              fontFamily: "eudoxus",
+            }}
           >
             {children}
           </Text>
