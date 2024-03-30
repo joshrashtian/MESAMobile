@@ -14,7 +14,7 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 
 const EventHome = () => {
   const [events, setEvents] = useState<EventType[]>();
-    useUser();
+  useUser();
 
   async function fetchEvents() {
     const { data: FetchedData, error } = await supabase
@@ -47,7 +47,7 @@ const EventHome = () => {
     },
   ];
 
-    return (
+  return (
     <View style={styles.core}>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
         {buttons.map((e) => (

@@ -61,7 +61,6 @@ const ForYouEvents = () => {
   if (loading) return <ActivityIndicator />;
   return (
     <View style={styles.core}>
-      <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>Recommended</Text>
       <FlatList
         data={events}
         pagingEnabled
@@ -83,7 +82,6 @@ export default ForYouEvents;
 const styles = StyleSheet.create({
   core: {
     flex: 1,
-    paddingTop: 70,
     justifyContent: "center",
     flexDirection: "column",
     backgroundColor: "#f9f9f9",

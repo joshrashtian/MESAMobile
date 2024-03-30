@@ -19,21 +19,23 @@ const ConnectLayout = () => {
     <Tabs
       screenOptions={{
         headerShown: false,
-
         tabBarActiveTintColor: "#f00",
+        tabBarHideOnKeyboard: true,
         tabBarLabel: ({ children, focused }) => (
           <Text
             style={{
               color: focused ? "#f00" : "#aaa",
               fontFamily: "eudoxus",
+              fontSize: 11,
             }}
           >
             {children}
           </Text>
         ),
+        tabBarStyle: { height: 80, padding: 10 },
         tabBarBackground: () => (
           <LinearGradient
-            colors={["#edd", "#fff"]}
+            colors={["#fff", "#fff"]}
             start={{ x: 0.46, y: 0 }}
             style={{ flex: 1 }}
           />

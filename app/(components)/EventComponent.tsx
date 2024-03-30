@@ -30,7 +30,7 @@ export type EventType = {
   name: string;
   desc: string;
   start: Date;
-  end: Date;
+  end?: Date;
   location: string;
   tags: string[];
   type: string;

@@ -1,6 +1,6 @@
 import { View, Text, Image } from "react-native";
 import React, { useEffect, useState } from "react";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import Animated, { Easing, FadeInUp } from "react-native-reanimated";
 import { useUser } from "../../(contexts)/AuthContext";
 import { supabase } from "../../../supabase";
 import { EventType } from "../EventComponent";
@@ -71,13 +71,14 @@ const UpcomingEvent = () => {
 
   return (
     <Animated.View
-      entering={FadeInUp}
+      entering={FadeInUp.easing(Easing.inOut(Easing.quad))}
       style={{
         backgroundColor: "#fff",
         shadowColor: "#000",
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.7,
         shadowRadius: 3,
+        borderRadius: 10,
       }}
     >
       <Image src={event?.image?.url} style={{ width: "100%", height: 52 }} />
@@ -88,7 +89,13 @@ const UpcomingEvent = () => {
             ? `${date.getMonth() - now.getMonth()} MONTHS`
             : now.getDate() < date.getDate()
             ? `${date.getDate() - now.getDate()} DAYS`
-            : ""}
+            : now.getHours() < date.getHours()
+            ? `${date.getHours() - now.getHours()} ${
+                date.getHours() - now.getHours() === 1 ? "HOUR" : "HOURS"
+              }`
+            : event.end && new Date(event.end).getTime() > now.getTime()
+            ? `${date.getMinutes() - now.getMinutes()} MINUTES`
+            : "ONGOING EVENT"}
         </Text>
         <Text style={{ fontFamily: "eudoxus" }}>{event.name}</Text>
       </View>

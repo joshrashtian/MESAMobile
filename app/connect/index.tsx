@@ -8,10 +8,17 @@ import {
 } from "react-native";
 import React from "react";
 import { ContextProps, useUser } from "../(contexts)/AuthContext";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import UpcomingEvent from "../(components)/FrontPage/UpcomingEvent";
 import { Ionicons } from "@expo/vector-icons";
-import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  FadeInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withTiming,
+} from "react-native-reanimated";
+import MenuButton from "../(components)/Components/MenuButton";
 
 const ConnectHome = () => {
   const user: ContextProps = useUser();
@@ -24,31 +31,34 @@ const ConnectHome = () => {
         style={{
           flexDirection: "row",
           gap: 10,
+          justifyContent: "center",
           alignItems: "center",
         }}
       >
-        <View
-          style={{
-            width: 48,
-            borderRadius: 200,
-            height: 48,
-            shadowColor: "#000",
-            shadowOffset: { width: 0, height: 5 },
-            shadowOpacity: 0.2,
-            shadowRadius: 10,
-          }}
-        >
-          <Animated.Image
-            entering={FadeIn.delay(500).duration(400)}
-            src={user.data?.avatar_url}
+        {user.data?.avatar_url && (
+          <View
             style={{
-              resizeMode: "cover",
-              width: "100%",
-              height: "100%",
+              width: 38,
               borderRadius: 200,
+              height: 38,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 5 },
+              shadowOpacity: 0.2,
+              shadowRadius: 10,
             }}
-          />
-        </View>
+          >
+            <Animated.Image
+              entering={FadeIn.delay(500).duration(400)}
+              src={user.data?.avatar_url}
+              style={{
+                resizeMode: "cover",
+                width: "100%",
+                height: "100%",
+                borderRadius: 200,
+              }}
+            />
+          </View>
+        )}
         <Animated.Text
           entering={FadeInUp.delay(800)}
           style={styles.welcometext}
@@ -76,59 +86,19 @@ const ConnectHome = () => {
             height: 40,
             width: "100%",
             flexDirection: "row",
+            flexWrap: "wrap",
             gap: 3,
             justifyContent: "center",
           }}
         >
-          <Pressable
-            style={{
-              backgroundColor: "#fff",
-              width: "50%",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: 0.7,
-              shadowRadius: 3,
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              gap: 5,
-            }}
-          >
-            <Ionicons name="people" size={16} />
-            <Link href="/connect/Social/" style={{ alignItems: "center" }}>
-              <Text style={{ fontFamily: "eudoxus" }}>Social</Text>
-            </Link>
-          </Pressable>
-          <View
-            style={{
-              backgroundColor: "#fff",
-              width: "50%",
-              shadowColor: "#000",
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: 0.7,
-              shadowRadius: 3,
-              height: "100%",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              gap: 5,
-            }}
-          >
-            <Ionicons name="calendar-clear" size={16} />
-            <Link href="/connect/Social/" style={{ alignItems: "center" }}>
-              <Text style={{ fontFamily: "eudoxus" }}>Events</Text>
-            </Link>
-          </View>
+          <MenuButton link={"/connect/Social/"} title="Social" icon="people" />
+          <MenuButton
+            link={"/connect/Event/ForYouEvents/"}
+            title="Events For You"
+            icon="calendar"
+          />
         </View>
       </View>
-      <TouchableOpacity
-        onPress={() => {
-          user.signOut();
-        }}
-      >
-        <Text>Sign Out</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -140,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     gap: 10,
-    backgroundColor: "#E65C4C",
+    backgroundColor: "#E65C4F",
     padding: 10,
     paddingVertical: 100,
   },
@@ -150,7 +120,8 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   welcometext: {
-    fontSize: 26,
+    fontSize: 20,
+    fontFamily: "eudoxus",
     fontWeight: "bold",
     color: "#fff",
   },
