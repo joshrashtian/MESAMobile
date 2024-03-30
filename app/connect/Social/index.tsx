@@ -45,6 +45,9 @@ const SocialHome = () => {
     const amountToAdd = count > currentCount + 6 ? 6 : count - currentCount;
 
     console.log("amount to add", currentCount + amountToAdd);
+
+    console.log(amountToAdd)
+
     const { data, error } = await supabase
       .from("posts")
       .select()
@@ -55,7 +58,7 @@ const SocialHome = () => {
       console.log(error);
       return;
     }
-
+    
     setCurrentCount((e: any) => e + 6);
     setPostsRendered([...postsRendered, ...data]);
   }

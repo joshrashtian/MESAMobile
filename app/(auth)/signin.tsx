@@ -36,7 +36,7 @@ const SignIn = () => {
           Let's Get You Connected.
         </Text>
         <LinearGradient
-          colors={["#dcc", "#ccc"]}
+          colors={["#ccc", "#fdd"]}
           start={{ x: 0.497, y: 0 }}
           style={styles.inputContainer}
         >
@@ -46,6 +46,8 @@ const SignIn = () => {
               setEmail(e);
             }}
             autoCapitalize="none"
+            autoComplete="email"
+            autoCorrect={false}
           />
         </LinearGradient>
         <LinearGradient
@@ -60,6 +62,7 @@ const SignIn = () => {
             }}
             secureTextEntry={true}
             autoCapitalize="none"
+            autoComplete="current-password"
           />
         </LinearGradient>
         <TouchableOpacity
@@ -90,6 +93,7 @@ const styles = StyleSheet.create({
     width: "100%",
     borderTopRightRadius: 30,
     borderTopLeftRadius: 30,
+
   },
   input: {
     padding: 10,
@@ -103,10 +107,10 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     borderRadius: 30,
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: -3 },
-    shadowOpacity: 1,
-    shadowRadius: 2,
+    shadowOffset: { width: 0, height: 0},
+    shadowColor: '#ccc',
+    shadowOpacity: 0.7,
+    shadowRadius: 1,
     width: "100%",
     marginVertical: 4,
   },
