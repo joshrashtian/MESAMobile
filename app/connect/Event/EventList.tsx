@@ -52,9 +52,6 @@ const EventList = () => {
 
   return (
     <View style={styles.core}>
-      <Text style={{ fontFamily: "eudoxus", fontSize: 30 }}>
-        Your Saved Events
-      </Text>
       <FlatList
         data={events}
         pagingEnabled

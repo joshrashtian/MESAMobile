@@ -17,6 +17,7 @@ import { useUser } from "../../../(contexts)/AuthContext";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetBackgroundProps } from "@gorhom/bottom-sheet";
 import { addInterest, onInterestLost } from "../EventInterests";
+import { Ionicons } from "@expo/vector-icons";
 
 const EventModal = () => {
   const [event, setEvent] = useState<EventType>();
@@ -116,7 +117,8 @@ const EventModal = () => {
           </Text>
           <Text style={styles.secondary}>{event.desc}</Text>
           <Text style={styles.date}>
-            🕰️ {new Date(event.start).toLocaleDateString()} at{" "}
+            <Ionicons name="calendar" size={16} />{" "}
+            {new Date(event.start).toLocaleDateString()} at{" "}
             {new Date(event.start).getHours() < 10
               ? `0${new Date(event.start).getHours()}`
               : new Date(event.start).getHours()}
@@ -125,7 +127,9 @@ const EventModal = () => {
               ? `0${new Date(event.start).getMinutes()}`
               : new Date(event.start).getMinutes()}
           </Text>
-          <Text style={styles.date}>📍 {event.location}</Text>
+          <Text style={styles.date}>
+            <Ionicons name="pin-outline" size={16} /> {event.location}
+          </Text>
         </View>
       </View>
       <View style={{ padding: 20 }}>
@@ -239,11 +243,13 @@ const styles = StyleSheet.create({
   secondary: {
     fontSize: 20,
     color: "#8c8c8c",
+    fontFamily: "eudoxus",
   },
   date: {
     padding: 3,
     paddingHorizontal: 6,
     backgroundColor: "#eee",
+    alignItems: "center",
     fontSize: 20,
     fontFamily: "mono",
     color: "#000",

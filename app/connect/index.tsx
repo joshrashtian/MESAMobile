@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import React from "react";
 import { ContextProps, useUser } from "../(contexts)/AuthContext";
-import { Link, router } from "expo-router";
 import UpcomingEvent from "../(components)/FrontPage/UpcomingEvent";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, {
@@ -19,6 +18,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import MenuButton from "../(components)/Components/MenuButton";
+import {router} from "expo-router";
 
 const ConnectHome = () => {
   const user: ContextProps = useUser();
@@ -36,7 +36,8 @@ const ConnectHome = () => {
         }}
       >
         {user.data?.avatar_url && (
-          <View
+          <TouchableOpacity
+            onPress={() => router.push('/connect/Settings/')}
             style={{
               width: 38,
               borderRadius: 200,
@@ -57,7 +58,7 @@ const ConnectHome = () => {
                 borderRadius: 200,
               }}
             />
-          </View>
+          </TouchableOpacity>
         )}
         <Animated.Text
           entering={FadeInUp.delay(800)}

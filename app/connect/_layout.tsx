@@ -119,6 +119,14 @@ const ConnectLayout = () => {
           ),
         }}
       />
+      <Tabs.Screen
+        name="Settings"
+        options={{
+          href: null,
+          
+          presentation: 'modal'
+        }}
+      />
     </Tabs>
   );
 };
