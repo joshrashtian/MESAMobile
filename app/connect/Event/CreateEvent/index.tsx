@@ -14,6 +14,7 @@ const CreateEvent = () => {
       <FormInput
         placeholder="Give your event a name..."
         onChangeText={(e: string) => {
+        // @ts-ignore
           setEventDetails({ ...eventDetails, name: e });
         }}
       />
@@ -22,7 +23,8 @@ const CreateEvent = () => {
         multiline
         cursorColor={"#A00"}
         onChangeText={(e: string) => {
-          setEventDetails({ ...eventDetails, desc: e });
+          // @ts-ignore
+            setEventDetails({ ...eventDetails, desc: e });
         }}
       />
     </KeyboardAwareScrollView>

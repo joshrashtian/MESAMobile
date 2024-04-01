@@ -86,7 +86,11 @@ const SignIn = () => {
             SignInUser();
           }}
         >
-          <Text>Sign In</Text>
+          <Text style={{
+            fontFamily: 'eudoxus',
+            color: '#FFF'
+          }}>Sign In</Text>
+          <Ionicons name="person-add-outline" color="#FFF" size={16} />
         </TouchableOpacity>
 
       </LinearGradient>
@@ -112,14 +116,16 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   input: {
-    padding: 5,
+    padding: 15,
     paddingLeft: 10,
     shadowOffset: { width: 0, height: 0 },
-    shadowColor: "#000",
+    shadowColor: "#444",
     shadowOpacity: 0.7,
-    shadowRadius: 2,
+    shadowRadius: 1,
     width: "100%",
     color: "#ba2b1a",
+    fontFamily: 'eudoxus',
+    fontSize: 16
   },
   inputContainer: {
     borderRadius: 10,
@@ -133,7 +139,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
   },
-  button: {},
+  button: {
+    backgroundColor: "#e40",
+    borderRadius: 1000,
+    padding: 12,
+    paddingHorizontal: 24,
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
+  },
   error: {
     padding: 10,
     borderRadius: 10
