@@ -1,10 +1,11 @@
 import {
-    Appearance, Dimensions,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    useColorScheme,
-    View,
+  Appearance,
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  useColorScheme,
+  View,
 } from "react-native";
 import React, { useEffect } from "react";
 import { Link, router } from "expo-router";
@@ -14,9 +15,7 @@ import Carousel from "react-native-reanimated-carousel/src/Carousel";
 import CarouselData from "./CarouselData";
 
 const EntryPage = () => {
-  const width = Dimensions.get('window').width
-
-
+  const width = Dimensions.get("window").width;
 
   return (
     <View style={styles.container}>
@@ -41,14 +40,14 @@ const EntryPage = () => {
           autoPlayInterval={6000}
           mode={"parallax"}
           data={CarouselData}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View style={{ padding: 4 }}>
               <View style={styles.itemcontainer}>
                 <Ionicons name={item.image} size={60} color="#D00" />
                 <Text style={styles.header}>{item.text}</Text>
               </View>
             </View>
-            )}
+          )}
         />
 
         <TouchableOpacity
@@ -86,7 +85,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 500,
     backgroundColor: "#FFF",
-    gap: 10
+    gap: 10,
   },
   signin: {
     backgroundColor: "#e40",
@@ -98,11 +97,22 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   itemcontainer: {
-    width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', borderRadius: 30, backgroundColor: '#fefefe',
-    gap: 10, paddingHorizontal: 10, shadowColor: '#777', shadowOpacity: 0.5, shadowOffset: { width: 0, height: 1}
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 30,
+    backgroundColor: "#fefefe",
+    gap: 10,
+    paddingHorizontal: 10,
+    shadowColor: "#777",
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 0, height: 1 },
   },
   header: {
-    fontFamily: 'eudoxus',
-    fontSize: 16, textAlign: 'center', color: '#777'
-  }
+    fontFamily: "eudoxus",
+    fontSize: 16,
+    textAlign: "center",
+    color: "#777",
+  },
 });

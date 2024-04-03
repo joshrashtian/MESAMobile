@@ -123,8 +123,8 @@ const ConnectLayout = () => {
         name="Settings"
         options={{
           href: null,
-          
-          presentation: 'modal'
+
+          presentation: "modal",
         }}
       />
     </Tabs>
