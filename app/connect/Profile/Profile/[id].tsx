@@ -8,8 +8,12 @@ import { supabase } from "../../../../supabase";
 import { LinearGradient } from "expo-linear-gradient";
 
 const ProfileScreen = () => {
+
   const [data, setData] = useState<UserData>();
+  const [following, setFollowing] = useState<boolean | undefined>()
   const { id } = useLocalSearchParams();
+
+  const { user } = useUser()
 
   useEffect(() => {
     const fetchingData = async () => {
@@ -25,16 +29,53 @@ const ProfileScreen = () => {
       }
       setData(data);
     };
+
+    const seeFollowed = async () => {
+      const { data, error } = await supabase
+      .schema('usersrelations')
+      .from("follows")
+        .select()
+        .match({ follower_id: user?.id, followed_id: id })
+        .single();
+
+      if (error) {
+        console.log(error);
+        return;
+      }
+      setFollowing(data.length !== 1);
+    }
+
+    seeFollowed();
     fetchingData();
   }, []);
 
   if (!data) return <Loading />;
+
+  const FollowStatusChanged = async() => {
+    let errorMsg;
+    if(!following) {
+      const { error } = await supabase.schema('usersrelations')
+            .from("follows")
+            .insert({ followed_id: id })
+      errorMsg = error
+
+    } else {
+      const { error } = await supabase.schema('usersrelations')
+            .from("follows")
+            .delete().match({ follower_id: user?.id, followed_id: id })
+      errorMsg = error;
+    }
+    console.log(errorMsg)
+    if(!errorMsg) setFollowing(e => !e)
+    console.log('follow status changed')
+  }
+
   return (
     <View style={styles.core}>
       <ScrollView>
         <Header user={data} />
         <View>
-          <Pressable style={styles.followbutton}>
+          <Pressable style={styles.followbutton} onPress={() => FollowStatusChanged()}>
             <LinearGradient
               style={{
                 width: "100%",
@@ -47,7 +88,7 @@ const ProfileScreen = () => {
               colors={["#23F", "#56F"]}
             >
               <Text style={{ fontFamily: "eudoxus", color: "#FFF" }}>
-                Follow
+                {following ? "Unfollow" : "Follow" }
               </Text>
             </LinearGradient>
           </Pressable>

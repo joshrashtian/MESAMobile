@@ -10,6 +10,7 @@ const SettingsLayout = () => {
         headerShown: true,
         headerShadowVisible: false,
         headerBackVisible: false,
+
         headerTitle: ({ children }) => (
           <Text style={{ fontFamily: "eudoxus", fontSize: 16 }}>
             {children}
@@ -19,9 +20,11 @@ const SettingsLayout = () => {
         contentStyle: {
           flex: 1,
           backgroundColor: "#f9f9f9",
+
         },
+
       }}>
-        <Stack.Screen name="index" options={{ title: 'Settings'}} />      
+      <Stack.Screen name="index" options={{ title: 'Settings',  presentation: 'modal',}} />
       </Stack>
   );
 };
