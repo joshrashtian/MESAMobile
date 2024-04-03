@@ -50,6 +50,7 @@ const ConnectLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
+          
           title: "Connect",
           tabBarIcon: ({ focused }) => (
             <Ionicons

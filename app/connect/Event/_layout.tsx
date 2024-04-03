@@ -11,6 +11,7 @@ const LayoutEvents = () => {
   return (
     <Stack
       screenOptions={{
+        animation: "fade",
         headerShown: true,
         headerShadowVisible: false,
         headerBackVisible: false,

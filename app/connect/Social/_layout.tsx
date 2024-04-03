@@ -6,6 +6,7 @@ const Layout = () => {
   return (
     <Stack
       screenOptions={{
+        animation: "fade",
         headerShown: false,
         headerStyle: { backgroundColor: "#f86" },
         contentStyle: {
