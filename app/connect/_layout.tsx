@@ -1,11 +1,16 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { Stack, Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useUser } from "../(contexts)/AuthContext";
-import Animated, { ZoomIn, ZoomInRotate } from "react-native-reanimated";
-import { supabase } from "../../supabase";
+import Animated, {
+  useSharedValue,
+  withSpring,
+  withTiming,
+  ZoomIn,
+  ZoomInRotate,
+} from "react-native-reanimated";
 import Loading from "../Loading";
 
 const ConnectLayout = () => {
@@ -81,8 +86,8 @@ const ConnectLayout = () => {
                   : "https://gnmpzioggytlqzekuyuo.supabase.co/storage/v1/object/public/avatars/UserIcon.png"
               }
               style={{
-                width: 40,
-                height: 40,
+                width: 48,
+                height: 48,
                 borderRadius: 200,
                 position: "absolute",
                 borderWidth: focused ? 1 : 0,
@@ -123,8 +128,8 @@ const ConnectLayout = () => {
         name="Settings"
         options={{
           href: null,
-          
-          presentation: 'modal'
+
+          presentation: "modal",
         }}
       />
     </Tabs>

@@ -1,5 +1,11 @@
-import { View, Text, ActivityIndicator } from "react-native";
-import { Link, useLocalSearchParams } from "expo-router";
+import {
+  View,
+  Text,
+  ActivityIndicator,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
+import { Link, router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import { PostType } from "../../../(components)/Post";
@@ -32,16 +38,19 @@ const Post = () => {
       colors={["transparent", "rgba(255, 99, 71,0.3)"]}
     >
       <Text style={{ fontFamily: "eudoxus", fontSize: 24 }}>{post.title}</Text>
-      <View
+      <Pressable
         style={{
           flexDirection: "row",
           gap: 4,
           justifyContent: "space-between",
         }}
+        onPress={() => {
+          router.push(`/connect/Profile/Profile/${post.userid}`);
+        }}
       >
         <Text>by {post.creator.realname}</Text>
         <Text>Posted {new Date(post.created_at).toLocaleDateString()}</Text>
-      </View>
+      </Pressable>
 
       <View style={{ gap: 8, marginTop: 20 }}>
         {post.data.data.map((item: any, index: number) => {

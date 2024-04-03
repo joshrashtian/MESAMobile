@@ -6,7 +6,15 @@ const LayoutProfile = () => {
   return (
     <Stack
       screenOptions={{ headerShown: false, contentStyle: { paddingTop: 40 } }}
-    />
+    >
+      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="Profile/[id]"
+        options={{
+          presentation: "modal",
+        }}
+      />
+    </Stack>
   );
 };
 
