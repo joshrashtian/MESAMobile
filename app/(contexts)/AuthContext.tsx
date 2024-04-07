@@ -97,7 +97,6 @@ export const AuthContextProvider = ({
       .single();
 
     console.log("successfully grabbed data");
-    console.log(!data);
     setUserData(data);
   };
 
@@ -116,7 +115,6 @@ export const AuthContextProvider = ({
         .single();
 
       console.log("successfully grabbed data");
-      console.log(data);
       setUserData(data);
     } else {
       setUser(undefined);

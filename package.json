@@ -12,6 +12,7 @@
     "@expo/vector-icons": "^14.0.0",
     "@gorhom/bottom-sheet": "^4.6.1",
     "@react-native-async-storage/async-storage": "1.21.0",
+    "@react-native-community/datetimepicker": "^7.6.4",
     "@supabase/supabase-js": "^2.39.8",
     "expo": "~50.0.13",
     "expo-constants": "~15.4.5",

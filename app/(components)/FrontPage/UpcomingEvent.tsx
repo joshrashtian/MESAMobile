@@ -81,7 +81,15 @@ const UpcomingEvent = () => {
         borderRadius: 10,
       }}
     >
-      <Image src={event?.image?.url} style={{ width: "100%", height: 52 }} />
+      <Image
+        src={event?.image?.url}
+        style={{
+          width: "100%",
+          height: 52,
+          borderTopRightRadius: 10,
+          borderTopLeftRadius: 10,
+        }}
+      />
       <View style={{ padding: 8 }}>
         <Text style={{ fontWeight: "bold" }}>
           UPCOMING IN{" "}

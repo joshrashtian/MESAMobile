@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import {View, Text, StyleSheet, ScrollView, Pressable, StyleSheetProperties} from "react-native";
 import React, { useEffect, useState } from "react";
 import { UserData, useUser } from "../../../(contexts)/AuthContext";
 import Header from "../(components)/Header";
@@ -73,7 +73,7 @@ const ProfileScreen = () => {
   return (
     <View style={styles.core}>
       <ScrollView>
-        <Header user={data} />
+        <Header user={data} visibility={true} />
         <View>
           <Pressable style={styles.followbutton} onPress={() => FollowStatusChanged()}>
             <LinearGradient
