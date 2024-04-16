@@ -1,4 +1,11 @@
-import {View, Text, StyleSheet, ScrollView, Pressable, StyleSheetProperties} from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Pressable,
+  StyleSheetProperties,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { UserData, useUser } from "../../../(contexts)/AuthContext";
 import Header from "../(components)/Header";
@@ -8,12 +15,11 @@ import { supabase } from "../../../../supabase";
 import { LinearGradient } from "expo-linear-gradient";
 
 const ProfileScreen = () => {
-
   const [data, setData] = useState<UserData>();
-  const [following, setFollowing] = useState<boolean | undefined>()
+  const [following, setFollowing] = useState<boolean | undefined>();
   const { id } = useLocalSearchParams();
 
-  const { user } = useUser()
+  const { user } = useUser();
 
   useEffect(() => {
     const fetchingData = async () => {
@@ -32,8 +38,8 @@ const ProfileScreen = () => {
 
     const seeFollowed = async () => {
       const { data, error } = await supabase
-      .schema('usersrelations')
-      .from("follows")
+        .schema("usersrelations")
+        .from("follows")
         .select()
         .match({ follower_id: user?.id, followed_id: id })
         .single();
@@ -43,7 +49,7 @@ const ProfileScreen = () => {
         return;
       }
       setFollowing(data.length !== 1);
-    }
+    };
 
     seeFollowed();
     fetchingData();
@@ -51,48 +57,56 @@ const ProfileScreen = () => {
 
   if (!data) return <Loading />;
 
-  const FollowStatusChanged = async() => {
+  const FollowStatusChanged = async () => {
     let errorMsg;
-    if(!following) {
-      const { error } = await supabase.schema('usersrelations')
-            .from("follows")
-            .insert({ followed_id: id })
-      errorMsg = error
-
+    if (!following) {
+      const { error } = await supabase
+        .schema("usersrelations")
+        .from("follows")
+        .insert({ followed_id: id });
+      errorMsg = error;
     } else {
-      const { error } = await supabase.schema('usersrelations')
-            .from("follows")
-            .delete().match({ follower_id: user?.id, followed_id: id })
+      const { error } = await supabase
+        .schema("usersrelations")
+        .from("follows")
+        .delete()
+        .match({ follower_id: user?.id, followed_id: id });
       errorMsg = error;
     }
-    console.log(errorMsg)
-    if(!errorMsg) setFollowing(e => !e)
-    console.log('follow status changed')
-  }
+    console.log(errorMsg);
+    if (!errorMsg) setFollowing((e) => !e);
+    console.log("follow status changed");
+  };
 
   return (
     <View style={styles.core}>
       <ScrollView>
         <Header user={data} visibility={true} />
         <View>
-          <Pressable style={styles.followbutton} onPress={() => FollowStatusChanged()}>
-            <LinearGradient
-              style={{
-                width: "100%",
-                height: 32,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 10,
-              }}
-              start={{ x: 0.49, y: 0 }}
-              colors={["#23F", "#56F"]}
+          {user?.id !== id && (
+            <Pressable
+              style={styles.followbutton}
+              onPress={() => FollowStatusChanged()}
             >
-              <Text style={{ fontFamily: "eudoxus", color: "#FFF" }}>
-                {following ? "Unfollow" : "Follow" }
-              </Text>
-            </LinearGradient>
-          </Pressable>
+              <LinearGradient
+                style={{
+                  width: "100%",
+                  height: 32,
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 10,
+                }}
+                start={{ x: 0.49, y: 0 }}
+                colors={["#23F", "#56F"]}
+              >
+                <Text style={{ fontFamily: "eudoxus", color: "#FFF" }}>
+                  {following ? "Unfollow" : "Follow"}
+                </Text>
+              </LinearGradient>
+            </Pressable>
+          )}
         </View>
+        
       </ScrollView>
     </View>
   );

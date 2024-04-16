@@ -26,6 +26,7 @@ const ConnectLayout = () => {
         headerShown: false,
         tabBarActiveTintColor: "#f00",
         tabBarHideOnKeyboard: true,
+        tabBarShowLabel: false,
         tabBarLabel: ({ children, focused }) => (
           <Text
             style={{
@@ -50,7 +51,6 @@ const ConnectLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          
           title: "Connect",
           tabBarIcon: ({ focused }) => (
             <Ionicons

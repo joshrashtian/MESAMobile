@@ -6,6 +6,7 @@ import Animated, {
   FadeInDown,
   FadeInUp,
 } from "react-native-reanimated";
+import { FontAwesome, FontAwesome6, Ionicons } from "@expo/vector-icons";
 
 const Header = ({
   user,
@@ -38,12 +39,12 @@ const Header = ({
         <Animated.View
           entering={FadeInUp.delay(100).duration(300).springify()}
           style={{
-            padding: 16,
+            padding: 20,
 
             backgroundColor: "#fff",
             borderRadius: 10,
 
-            gap: 10,
+            gap: 20,
             shadowColor: "#888",
             shadowOffset: { width: 0, height: 5 },
             shadowOpacity: 0.2,
@@ -58,17 +59,50 @@ const Header = ({
               justifyContent: "space-between",
             }}
           >
-            <Text
-              style={{ fontFamily: "eudoxus", textTransform: "capitalize" }}
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
             >
-              {user.role}
-            </Text>
-            <Text style={{ fontFamily: "eudoxus", color: "#065" }}>
-              {user.major ? user.major : "Undecided"}
-            </Text>
-            <Text style={{ fontFamily: "eudoxus", color: "#888" }}>
-              Joined {new Date(user.created_at).toLocaleDateString()}
-            </Text>
+              <FontAwesome6 name="ranking-star" size={18} />
+              <Text
+                style={{ fontFamily: "eudoxus", textTransform: "capitalize" }}
+              >
+                {user.role}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <FontAwesome name="address-card" color="#065" size={18} />
+              <Text style={{ fontFamily: "eudoxus", color: "#065" }}>
+                {user.major ? user.major : "Undecided"}
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "column",
+              }}
+            >
+              <Ionicons name="time" size={18} color="#888" />
+              <Text
+                style={{
+                  fontFamily: "eudoxus",
+                  alignItems: "center",
+                  color: "#888",
+                }}
+              >
+                Joined {new Date(user.created_at).toLocaleDateString()}
+              </Text>
+            </View>
           </View>
         </Animated.View>
       )}

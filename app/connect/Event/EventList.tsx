@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../../supabase";
 import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
@@ -15,6 +15,7 @@ import { getEvents } from "./fetchEvents";
 const EventList = () => {
   const [events, setEvents] = useState<EventType[]>();
   const { user, data } = useUser();
+  const [refreshing, setRefreshing] = useState(false);
 
   async function fetchEvents() {
     const { data: EventInterests, error: InterestErr } = await supabase
@@ -44,6 +45,7 @@ const EventList = () => {
     setEvents(FetchedData);
   }
 
+  
   //
 
   useEffect(() => {
@@ -55,6 +57,7 @@ const EventList = () => {
       <FlatList
         data={events}
         pagingEnabled
+        refreshControl={() => <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={(e) => (
           <EventComponent color={"rgba(0,200,300,0.3)"} event={e.item} />
         )}

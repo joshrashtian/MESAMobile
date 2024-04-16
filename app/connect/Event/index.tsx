@@ -1,11 +1,12 @@
 import {
   ActivityIndicator,
   FlatList,
+  RefreshControl,
   StyleSheet,
   Text,
   View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../../supabase";
 import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
@@ -14,7 +15,8 @@ import Animated, { FadeInUp } from "react-native-reanimated";
 
 const EventHome = () => {
   const [events, setEvents] = useState<EventType[]>();
-  useUser();
+  const [refreshing, setRefreshing] = useState(false);
+  const user = useUser();
 
   async function fetchEvents() {
     const { data: FetchedData, error } = await supabase
@@ -30,6 +32,7 @@ const EventHome = () => {
     }
 
     setEvents(FetchedData);
+    setRefreshing(false);
   }
 
   useEffect(() => {
@@ -47,6 +50,10 @@ const EventHome = () => {
     },
   ];
 
+  const refresh = useCallback(async () => {
+    setRefreshing(true);
+    fetchEvents();
+  }, []);
   return (
     <View style={styles.core}>
       <View style={{ flexDirection: "row", justifyContent: "center" }}>
@@ -77,6 +84,9 @@ const EventHome = () => {
         data={events}
         pagingEnabled
         showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={refresh} />
+        }
         renderItem={(e) => (
           <View style={{ padding: 2.5 }}>
             <EventComponent color={"rgba(300,200,200,0.3)"} event={e.item} />
