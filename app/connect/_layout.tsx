@@ -55,7 +55,7 @@ const ConnectLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="home-outline"
-              size={24}
+              size={28}
               color={focused ? "#f00" : "#aaa"}
             />
           ),
@@ -68,7 +68,7 @@ const ConnectLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="people-circle-outline"
-              size={24}
+              size={28}
               color={focused ? "#f00" : "#aaa"}
             />
           ),
@@ -106,7 +106,7 @@ const ConnectLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="calendar-number"
-              size={24}
+              size={28}
               color={focused ? "#f00" : "#aaa"}
             />
           ),
@@ -119,7 +119,7 @@ const ConnectLayout = () => {
           tabBarIcon: ({ focused }) => (
             <Ionicons
               name="library"
-              size={24}
+              size={28}
               color={focused ? "#f00" : "#aaa"}
             />
           ),
@@ -129,7 +129,6 @@ const ConnectLayout = () => {
         name="Settings"
         options={{
           href: null,
-
           presentation: "modal",
         }}
       />

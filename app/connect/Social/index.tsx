@@ -10,12 +10,18 @@ import {
   useWindowDimensions,
   RefreshControl,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { supabase } from "../../../supabase";
 import Post, { PostType } from "../../(components)/Post";
 import Wim from "../../(components)/Wim";
 import { LinearGradient } from "expo-linear-gradient";
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Animated, {
   Easing,
   FadeInDown,
@@ -27,6 +33,10 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { Link, router } from "expo-router";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  BottomSheetProps,
+} from "@gorhom/bottom-sheet";
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
@@ -34,6 +44,9 @@ const SocialHome = () => {
   const [currentCount, setCurrentCount] = useState<number>();
   const [addOpen, setAddOpen] = useState<boolean>(false);
   const [refreshing, setRefreshing] = useState(false);
+
+  const values = useMemo(() => ["25%", "40%"], []);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const window = useWindowDimensions();
 
@@ -46,7 +59,7 @@ const SocialHome = () => {
 
     console.log("amount to add", currentCount + amountToAdd);
 
-    console.log(amountToAdd)
+    console.log(amountToAdd);
 
     const { data, error } = await supabase
       .from("posts")
@@ -58,7 +71,7 @@ const SocialHome = () => {
       console.log(error);
       return;
     }
-    
+
     setCurrentCount((e: any) => e + 6);
     setPostsRendered([...postsRendered, ...data]);
   }
@@ -163,11 +176,24 @@ const SocialHome = () => {
     transform: [{ scale: buttonOpacities.value }],
   }));
 
+  const backgroundBottomSheet = useCallback(
+    (props: any) => (
+      <LinearGradient
+        {...props}
+        locations={[0, 0.49, 1]}
+        colors={["#5E70A1", "#6E5EA1", "#5E91A1"]}
+      />
+    ),
+    []
+  );
+
   return (
     <View style={styles.core}>
-      <Text style={styles.heading}>Activity Going On</Text>
       <FlatList
         data={postsRendered}
+        ListHeaderComponent={
+          <Text style={styles.heading}>Recent Activity</Text>
+        }
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={() => <ActivityIndicator />}
         ListFooterComponent={() =>
@@ -211,9 +237,12 @@ const SocialHome = () => {
             justifyContent: "center",
             alignItems: "center",
           }}
-          onPress={() => toggleAdd()}
+          onPress={() =>
+            //toggleAdd()
+            bottomSheetRef.current?.expand()
+          }
         >
-          <Ionicons name="add-sharp" color="#Fff" size={20} />
+          <MaterialIcons name="post-add" color="#Fff" size={20} />
         </TouchableOpacity>
       </Animated.View>
       <Animated.View
@@ -227,6 +256,7 @@ const SocialHome = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "row",
+            gap: 10,
           },
         ]}
       >
@@ -261,7 +291,114 @@ const SocialHome = () => {
             </Text>
           </TouchableOpacity>
         </LinearGradient>
+        <LinearGradient
+          style={{
+            width: 100,
+            height: 40,
+
+            borderRadius: 5,
+          }}
+          colors={["#cddeee", "#bcdede"]}
+        >
+          <TouchableOpacity
+            style={{
+              width: "100%",
+              height: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+            onPress={() => {
+              bottomSheetRef.current?.expand();
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: "eudoxus",
+                fontSize: 16,
+                color: "#000",
+                fontWeight: "bold",
+                textAlign: "center",
+              }}
+            >
+              Wim
+            </Text>
+          </TouchableOpacity>
+        </LinearGradient>
       </Animated.View>
+      <BottomSheet
+        backdropComponent={(props: any) => (
+          <BottomSheetBackdrop
+            appearsOnIndex={1}
+            disappearsOnIndex={-1}
+            {...props}
+          />
+        )}
+        backgroundComponent={backgroundBottomSheet}
+        ref={bottomSheetRef}
+        backgroundStyle={{ flex: 1 }}
+        index={-1}
+        enablePanDownToClose={true}
+        snapPoints={values}
+      >
+        <View style={{ padding: 10, flexDirection: "column", gap: 5 }}>
+          <Text
+            style={{
+              color: "#fff",
+              fontFamily: "eudoxus",
+              fontSize: 20,
+              marginBottom: 10,
+            }}
+          >
+            What would you like to create?
+          </Text>
+          <View style={{ flexDirection: "row" }}>
+            <TouchableOpacity
+              onPress={() => {
+                router.dismiss();
+                router.push("/connect/Social/Creator/post");
+              }}
+              style={{
+                backgroundColor: "#fff",
+                padding: 10,
+                shadowColor: "#000",
+                shadowOpacity: 0.6,
+                shadowRadius: 4,
+                elevation: 10,
+                borderRadius: 2,
+                alignItems: "center",
+                gap: 4,
+                width: "100%",
+                flexDirection: "row",
+              }}
+            >
+              <MaterialIcons name="post-add" size={24} />
+              <Text style={{ fontFamily: "eudoxus" }}>Post</Text>
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              router.dismiss();
+              router.push("/connect/Social/Creator/post");
+            }}
+            style={{
+              backgroundColor: "#fff",
+              padding: 10,
+              shadowColor: "#000",
+              shadowOpacity: 0.6,
+              shadowRadius: 4,
+              elevation: 10,
+              borderRadius: 2,
+              alignItems: "center",
+              gap: 4,
+              width: "100%",
+              flexDirection: "row",
+            }}
+          >
+            <MaterialIcons name="lightbulb-outline" size={24} />
+            <Text style={{ fontFamily: "eudoxus" }}>Wim</Text>
+          </TouchableOpacity>
+        </View>
+      </BottomSheet>
     </View>
   );
 };
@@ -271,7 +408,7 @@ export default SocialHome;
 const styles = StyleSheet.create({
   core: {
     flex: 1,
-    paddingTop: 70,
+
     justifyContent: "center",
     flexDirection: "column",
     backgroundColor: "#f9f9f9",
@@ -287,7 +424,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 26,
     fontWeight: "bold",
-    fontFamily: Platform.OS === "android" ? "eudoxus" : "",
+    fontFamily: "eudoxus",
     color: "#000",
   },
   add: {

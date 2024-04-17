@@ -7,17 +7,30 @@ const Layout = () => {
     <Stack
       screenOptions={{
         animation: "fade",
-        headerShown: false,
-        headerStyle: { backgroundColor: "#f86" },
+        headerShown: true,
+        headerShadowVisible: false,
+        headerBackVisible: false,
+        headerTitle: ({ children }) => (
+          <Text style={{ fontFamily: "eudoxus", fontSize: 16 }}>
+            {children}
+          </Text>
+        ),
+        headerStyle: { backgroundColor: "#fff" },
         contentStyle: {
           flex: 1,
           backgroundColor: "#f9f9f9",
         },
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Social Home" }} />
-      <Stack.Screen name="Post/[id]" options={{ presentation: "modal" }} />
-      <Stack.Screen name="Creator/post" options={{ presentation: "modal" }} />
+      <Stack.Screen name="index" options={{ title: "Community" }} />
+      <Stack.Screen
+        name="Post/[id]"
+        options={{ presentation: "modal", headerShown: false }}
+      />
+      <Stack.Screen
+        name="Creator/post"
+        options={{ presentation: "modal", title: "Create Post" }}
+      />
     </Stack>
   );
 };
