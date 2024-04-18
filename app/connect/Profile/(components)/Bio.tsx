@@ -1,5 +1,5 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { UserData } from "../../../(contexts)/AuthContext";
 
@@ -12,7 +12,7 @@ const Bio = ({ user }: { user: UserData }) => {
 
         backgroundColor: "#fff",
         borderRadius: 10,
-
+        marginVertical: 10,
         gap: 20,
         shadowColor: "#888",
         shadowOffset: { width: 0, height: 5 },
@@ -20,7 +20,7 @@ const Bio = ({ user }: { user: UserData }) => {
         shadowRadius: 5,
       }}
     >
-      <Text>{user?.bio}</Text>
+      <Text>Temp</Text>
     </Animated.View>
   );
 };

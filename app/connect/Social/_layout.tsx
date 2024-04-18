@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
+import { View, Text, Pressable } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const Layout = () => {
   return (
@@ -22,7 +23,17 @@ const Layout = () => {
         },
       }}
     >
-      <Stack.Screen name="index" options={{ title: "Community" }} />
+      <Stack.Screen
+        name="index"
+        options={{
+          title: "Community",
+          headerRight: (props) => (
+            <Link href="/connect/Social/Search/">
+              <Ionicons name="search-outline" size={16} color="#f99" />
+            </Link>
+          ),
+        }}
+      />
       <Stack.Screen
         name="Post/[id]"
         options={{ presentation: "modal", headerShown: false }}
@@ -31,6 +42,7 @@ const Layout = () => {
         name="Creator/post"
         options={{ presentation: "modal", title: "Create Post" }}
       />
+      <Stack.Screen name="Search/index" options={{ title: "Search" }} />
     </Stack>
   );
 };

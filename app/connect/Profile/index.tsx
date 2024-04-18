@@ -11,7 +11,7 @@ const PersonalProfile = () => {
   return (
     <View style={styles.core}>
       <ScrollView>
-        <Header user={data} />
+        <Header visibility={true} user={data} />
       </ScrollView>
     </View>
   );

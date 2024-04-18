@@ -13,6 +13,7 @@ import Loading from "../../../Loading";
 import { useLocalSearchParams } from "expo-router";
 import { supabase } from "../../../../supabase";
 import { LinearGradient } from "expo-linear-gradient";
+import Bio from "../(components)/Bio";
 
 const ProfileScreen = () => {
   const [data, setData] = useState<UserData>();
@@ -80,8 +81,9 @@ const ProfileScreen = () => {
 
   return (
     <View style={styles.core}>
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <Header user={data} visibility={true} />
+        <Bio user={data} />
         <View>
           {user?.id !== id && (
             <Pressable
@@ -106,7 +108,6 @@ const ProfileScreen = () => {
             </Pressable>
           )}
         </View>
-        
       </ScrollView>
     </View>
   );
