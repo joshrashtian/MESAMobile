@@ -4,25 +4,29 @@ import {
   View,
   TextInput,
   KeyboardAvoidingView,
-  Pressable,
+  Pressable, Image,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, {useCallback, useMemo, useState} from "react";
+import * as ImagePicker from 'expo-image-picker'
+import * as ExpoFile from 'expo-file-system'
 import Animated, {
-  Easing,
+  Easing, FadeInDown,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
 import { supabase } from "../../../../supabase";
 import { useUser } from "../../../(contexts)/AuthContext";
 import { router } from "expo-router";
+import {decode} from "base64-arraybuffer";
 
 const PostCreator = () => {
   const user = useUser();
   const [title, setTitle] = useState<string>();
   const [body, setBody] = useState<string>();
+  const [image, setImage] = useState<string>();
 
   const createPost = async () => {
-    const { error } = await supabase.from("posts").insert([
+    const { data, error } = await supabase.from("posts").insert([
       {
         userid: user.user?.id,
         title: title,
@@ -32,6 +36,9 @@ const PostCreator = () => {
               type: "text",
               text: body,
             },
+            {
+              type: image ? "image" : "null"
+            }
           ],
         },
         type: "post",
@@ -41,12 +48,31 @@ const PostCreator = () => {
           username: user.data?.username,
         },
       },
-    ]);
+    ]).select('id')
     if (error) {
       console.log(error);
+      return;
     }
-    router.dismiss();
+    if(data[0]?.id && image) {
+      const file = await ExpoFile.readAsStringAsync(image, { encoding: 'base64' })
+      const { data: PathName, error } = await supabase
+          .storage
+          .from('postPictures')
+          .upload(`${data[0].id}/context.png`, decode(file), {
+            cacheControl: '3600',
+            upsert: false,
+            contentType: 'image/png',
+          })
+      if(error) console.error(error.message)
+    }
+    await router.dismiss();
   };
+
+  const uploadImage = useCallback(async () => {
+    const image = await ImagePicker.launchImageLibraryAsync()
+    if(image.canceled) return;
+    setImage(image.assets[0].uri)
+  }, [])
 
   // Submit Button
   const submitStyle = useAnimatedStyle(() => ({
@@ -97,7 +123,14 @@ const PostCreator = () => {
           />
         </KeyboardAvoidingView>
       </View>
-      <View style={{ flexDirection: "row" }}>
+      {
+        image &&
+          <Animated.Image entering={FadeInDown} src={image} style={{width: 100, height: 100}} />
+      }
+      <View style={{ flexDirection: "row", gap: 4 }}>
+        <Pressable onPress={uploadImage}>
+          <Animated.Text style={submitStyle}>Upload Image</Animated.Text>
+        </Pressable>
         <Pressable onPress={() => (title && body ? createPost() : null)}>
           <Animated.Text style={submitStyle}>Submit Post</Animated.Text>
         </Pressable>

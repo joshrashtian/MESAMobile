@@ -3,18 +3,19 @@ import {
   Text,
   ActivityIndicator,
   TouchableOpacity,
-  Pressable,
+  Pressable
 } from "react-native";
 import { Link, router, useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import { PostType } from "../../../(components)/Post";
 import { LinearGradient } from "expo-linear-gradient";
+import { type FileObject } from "@supabase/storage-js";
 
 const Post = () => {
   const [post, setPost] = useState<PostType>();
   const { id } = useLocalSearchParams();
-
+  const [image, setImage] = useState<FileObject | null>(null);
   useEffect(() => {
     const fetchingData = async () => {
       const { data, error } = await supabase
