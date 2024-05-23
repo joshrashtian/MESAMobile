@@ -45,8 +45,9 @@ const EventList = () => {
     setEvents(FetchedData);
   }
 
-  
-  //
+  const onRefresh = useCallback(() => {
+
+  }, [])
 
   useEffect(() => {
     fetchEvents();
@@ -57,7 +58,7 @@ const EventList = () => {
       <FlatList
         data={events}
         pagingEnabled
-        refreshControl={() => <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={(e) => (
           <EventComponent color={"rgba(0,200,300,0.3)"} event={e.item} />
         )}

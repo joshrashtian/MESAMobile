@@ -4,9 +4,9 @@ import {
   View,
   TextInput,
   KeyboardAvoidingView,
-  Pressable, Image,
+  Pressable,
 } from "react-native";
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useState} from "react";
 import * as ImagePicker from 'expo-image-picker'
 import * as ExpoFile from 'expo-file-system'
 import Animated, {
@@ -36,9 +36,6 @@ const PostCreator = () => {
               type: "text",
               text: body,
             },
-            {
-              type: image ? "image" : "null"
-            }
           ],
         },
         type: "post",
@@ -47,6 +44,7 @@ const PostCreator = () => {
           realname: user.data?.real_name,
           username: user.data?.username,
         },
+        images: !!image
       },
     ]).select('id')
     if (error) {
@@ -69,7 +67,10 @@ const PostCreator = () => {
   };
 
   const uploadImage = useCallback(async () => {
-    const image = await ImagePicker.launchImageLibraryAsync()
+    const image = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+    })
     if(image.canceled) return;
     setImage(image.assets[0].uri)
   }, [])
@@ -129,7 +130,7 @@ const PostCreator = () => {
       }
       <View style={{ flexDirection: "row", gap: 4 }}>
         <Pressable onPress={uploadImage}>
-          <Animated.Text style={submitStyle}>Upload Image</Animated.Text>
+          <Animated.Text style={{ backgroundColor: "#E1341E", color: '#fff', padding: 10, borderRadius: 10,}}>Upload Image</Animated.Text>
         </Pressable>
         <Pressable onPress={() => (title && body ? createPost() : null)}>
           <Animated.Text style={submitStyle}>Submit Post</Animated.Text>

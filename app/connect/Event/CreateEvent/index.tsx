@@ -148,6 +148,7 @@ const CreateEvent = () => {
       </View>
       <FormInput
         placeholder="Add Some Tags..."
+        //@ts-ignore
         onChangeText={(e: string) => setTags(e.split(", "))}
         style={{ marginBottom: 10 }}
       />

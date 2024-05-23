@@ -174,6 +174,7 @@ const EventModal = () => {
             {...props}
           />
         )}
+        //@ts-ignore
         ref={bottomSheetRef}
         backgroundStyle={{ flex: 1 }}
         snapPoints={points}
