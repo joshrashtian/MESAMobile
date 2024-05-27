@@ -47,6 +47,7 @@ const PostCreator = () => {
           realname: user.data?.real_name,
           username: user.data?.username,
         },
+        images: !!image
       },
     ]).select('id')
     if (error) {
