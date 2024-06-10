@@ -8,23 +8,26 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { supabase } from "../../../../supabase";
 import { PollType } from "../Polls";
 import Poll from "../poll";
 import { Ionicons } from "@expo/vector-icons";
 import { getQuestions } from "./functions";
+import BottomSheetComp from "./BottomSheet";
 
 const Index = () => {
   const [polls, setPolls] = useState<PollType[]>([]);
   const [filter, setFilter] = useState<any>();
-
+  const ref: any = useRef(null);
   const buttons = useMemo(() => {
     return [
       {
         title: "Edit Filters",
         icon: <Ionicons name="build" size={16} />,
-        function() {},
+        function() {
+          ref.current?.expand();
+        },
       },
       {
         title: "Questions",
@@ -52,6 +55,7 @@ const Index = () => {
         return;
       }
       console.log("filtered");
+      //@ts-ignore
       setPolls(data);
     }
     get();
@@ -91,6 +95,7 @@ const Index = () => {
         ListEmptyComponent={() => <ActivityIndicator />}
         renderItem={({ item }) => <Poll poll={item} />}
       />
+      <BottomSheetComp refrence={ref} index={-1} />
     </View>
   );
 };
