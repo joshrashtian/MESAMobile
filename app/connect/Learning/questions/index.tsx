@@ -65,11 +65,15 @@ const Index = () => {
     <View style={{ flex: 1, padding: 10 }}>
       <FlatList
         data={polls}
+        stickyHeaderIndices={[0]}
+        stickyHeaderHiddenOnScroll
+        showsVerticalScrollIndicator={false}
         ListHeaderComponent={
           <ScrollView
             contentContainerStyle={{ gap: 10 }}
             pagingEnabled
             horizontal
+            style={{ backgroundColor: "#f6f6f6", paddingBottom: 4 }}
             showsHorizontalScrollIndicator={false}
           >
             {buttons.flatMap((e) => (
@@ -83,6 +87,7 @@ const Index = () => {
                   borderRadius: 10,
                 }}
                 onPress={e.function}
+                key={e.title}
               >
                 {e.icon}
                 <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
@@ -90,12 +95,12 @@ const Index = () => {
             ))}
           </ScrollView>
         }
-        pagingEnabled={true}
+        ListFooterComponent={<ActivityIndicator />}
         keyExtractor={(item) => item.id.toString()}
         ListEmptyComponent={() => <ActivityIndicator />}
         renderItem={({ item }) => <Poll poll={item} />}
       />
-      <BottomSheetComp refrence={ref} index={-1} />
+      <BottomSheetComp refrence={ref} submit={(e) => setFilter(e)} index={-1} />
     </View>
   );
 };

@@ -1,16 +1,20 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
+import { PollType } from "../Polls";
 const BottomSheetComp = ({
   refrence,
   index,
+  submit,
 }: {
   refrence: any;
   index: number;
+  submit: (e: PollType | null) => void;
 }) => {
   const points = useMemo(() => ["30%", "50%"], []);
+  const [filter, setFilter] = useState<PollType>();
   const backgroundBottomSheet = useCallback(
     (props: any) => (
       <LinearGradient
@@ -43,7 +47,10 @@ const BottomSheetComp = ({
         </Text>
         <View style={{ gap: 3.5, flexDirection: "row" }}>
           <TouchableOpacity
-            onPress={() => {}}
+            onPress={() => {
+              submit(null);
+              refrence.current?.close();
+            }}
             style={{
               backgroundColor: "#fff",
               width: "49%",
@@ -57,7 +64,6 @@ const BottomSheetComp = ({
             <Ionicons size={16} name="close" />
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => {}}
             style={{
               backgroundColor: "#fff",
               width: "49%",
@@ -65,6 +71,11 @@ const BottomSheetComp = ({
               justifyContent: "space-between",
               alignItems: "center",
               padding: 10,
+            }}
+            onPress={() => {
+              //@ts-ignore
+              submit(filter);
+              refrence.current?.close();
             }}
           >
             <Text style={{ fontFamily: "eudoxus" }}>Apply Filters</Text>

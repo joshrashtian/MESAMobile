@@ -20,7 +20,7 @@ const Bio = ({ user }: { user: UserData }) => {
         shadowRadius: 5,
       }}
     >
-      <Text>Temp</Text>
+      <Text>{user.bio ?? "This user does not have a bio set (yet)"}</Text>
     </Animated.View>
   );
 };

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Pressable } from "react-native";
 import React, { useState } from "react";
 import { useLocalSearchParams } from "expo-router";
 import { ScrollView } from "react-native-gesture-handler";
@@ -6,7 +6,8 @@ import Header from "../(components)/Header";
 import { supabase } from "../../../../supabase";
 import Loading from "../../../Loading";
 import { UserData } from "../../../(contexts)/AuthContext";
-
+import RecentPostsProfile from "./RecentPosts";
+import { LinearGradient } from "expo-linear-gradient";
 const Profile = () => {
   const { id } = useLocalSearchParams();
   const [data, setData] = useState<UserData>();
@@ -29,6 +30,24 @@ const Profile = () => {
     <View style={styles.core}>
       <ScrollView>
         <Header user={data} visibility={true} />
+        <Pressable>
+          <LinearGradient
+            style={{
+              width: "100%",
+              height: 32,
+              justifyContent: "center",
+              alignItems: "center",
+              borderRadius: 10,
+            }}
+            start={{ x: 0.49, y: 0 }}
+            colors={["#23F", "#56F"]}
+          >
+            <Text style={{ fontFamily: "eudoxus", color: "#FFF" }}>
+              View Following
+            </Text>
+          </LinearGradient>
+        </Pressable>
+        <RecentPostsProfile id={data.id} />
       </ScrollView>
     </View>
   );

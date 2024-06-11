@@ -14,6 +14,7 @@ const LayoutProfile = () => {
           presentation: "modal",
         }}
       />
+      <Stack.Screen name="Following/index" options={{ title: "Create Post" }} />
     </Stack>
   );
 };

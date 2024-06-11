@@ -14,6 +14,7 @@ import { useLocalSearchParams } from "expo-router";
 import { supabase } from "../../../../supabase";
 import { LinearGradient } from "expo-linear-gradient";
 import Bio from "../(components)/Bio";
+import RecentPostsProfile from "../Details/RecentPosts";
 
 const ProfileScreen = () => {
   const [data, setData] = useState<UserData>();
@@ -108,6 +109,8 @@ const ProfileScreen = () => {
             </Pressable>
           )}
         </View>
+
+        <RecentPostsProfile id={data.id} />
       </ScrollView>
     </View>
   );

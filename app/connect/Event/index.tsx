@@ -1,9 +1,12 @@
 import {
   ActivityIndicator,
+  Dimensions,
   FlatList,
   RefreshControl,
+  ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
@@ -12,6 +15,7 @@ import EventComponent, { EventType } from "../../(components)/EventComponent";
 import { useUser } from "../../(contexts)/AuthContext";
 import { Link } from "expo-router";
 import Animated, { FadeInUp } from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
 
 const EventHome = () => {
   const [events, setEvents] = useState<EventType[]>();
@@ -22,7 +26,7 @@ const EventHome = () => {
     const { data: FetchedData, error } = await supabase
       .from("events")
       .select()
-      .range(0, 4)
+      .range(0, 6)
       .gte("start", new Date(Date.now()).toISOString())
       .order("start");
 
@@ -43,10 +47,12 @@ const EventHome = () => {
     {
       name: "Saved Events",
       link: "/connect/Event/EventList",
+      icon: <Ionicons name="heart" size={16} />,
     },
     {
       name: "For You",
       link: "/connect/Event/ForYouEvents",
+      icon: <Ionicons name="calendar" size={16} />,
     },
   ];
 
@@ -54,36 +60,46 @@ const EventHome = () => {
     setRefreshing(true);
     fetchEvents();
   }, []);
+
   return (
     <View style={styles.core}>
-      <View style={{ flexDirection: "row", justifyContent: "center" }}>
-        {buttons.map((e) => (
-          <Link
-            href={e.link}
-            style={{
-              width: "33%",
-            }}
-            key={e.link}
-          >
-            <Animated.View
-              entering={FadeInUp}
-              style={{
-                backgroundColor: "#eee",
-                padding: 15,
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 15,
-              }}
-            >
-              <Text>{e.name}</Text>
-            </Animated.View>
-          </Link>
-        ))}
-      </View>
       <FlatList
         data={events}
-        pagingEnabled
+        //pagingEnabled
         showsVerticalScrollIndicator={false}
+        stickyHeaderHiddenOnScroll
+        stickyHeaderIndices={[0]}
+        ListHeaderComponent={
+          <ScrollView
+            contentContainerStyle={{
+              gap: 10,
+
+              flexDirection: "row",
+              backgroundColor: "#f9f9f9",
+            }}
+            pagingEnabled
+            horizontal
+            showsHorizontalScrollIndicator={false}
+          >
+            {buttons.map((e) => (
+              <Link href={e.link} key={e.link} style={{ marginBottom: 10 }}>
+                <View
+                  style={{
+                    width: Dimensions.get("window").width / 2 - 15,
+                    padding: 10,
+                    height: 60,
+                    backgroundColor: "#ededed",
+                    justifyContent: "flex-end",
+                    borderRadius: 10,
+                  }}
+                >
+                  {e.icon}
+                  <Text style={{ fontFamily: "eudoxus" }}>{e.name}</Text>
+                </View>
+              </Link>
+            ))}
+          </ScrollView>
+        }
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={refresh} />
         }
