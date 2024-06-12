@@ -3,7 +3,7 @@
     "name": "MESAMobile",
     "slug": "MESAMobile",
     "scheme": "MESAMobile",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -16,14 +16,19 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "io.mesaconnect.mobile",
+      "buildNumber": "2"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "softwareKeyboardLayoutMode": "pan"
+      "softwareKeyboardLayoutMode": "pan",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -32,7 +37,7 @@
       "expo-router",
       "expo-font",
       [
-      "expo-image-picker",
+        "expo-image-picker",
         {
           "photosPermission": "The app accesses your photos to let you share them with your friends."
         }
@@ -41,6 +46,14 @@
     "experiments": {
       "typedRoutes": true,
       "asyncRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "9974bf8f-93af-41e4-9387-3150fbf1c3ee"
+      }
     }
   }
 }

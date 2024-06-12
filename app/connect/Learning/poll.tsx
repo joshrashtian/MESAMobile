@@ -56,6 +56,7 @@ const Poll = ({ poll }: { poll: PollType }) => {
         {poll.options.map((e, i) => (
           <TouchableOpacity
             onPress={() => setSelected(i)}
+            key={i}
             style={{
               padding: 16,
               borderRadius: 10,
