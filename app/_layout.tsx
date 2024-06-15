@@ -11,6 +11,7 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { supabase } from "../supabase";
+import { StatusBar } from "expo-status-bar";
 
 const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
@@ -37,6 +38,7 @@ const RootLayout = () => {
     <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
       <AuthContextProvider>
         <Slot />
+        <StatusBar />
       </AuthContextProvider>
     </GestureHandlerRootView>
   );
