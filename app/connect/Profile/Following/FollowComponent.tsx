@@ -1,7 +1,8 @@
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { UserData } from "../../../(contexts)/AuthContext";
 import { router } from "expo-router";
+import { Image } from "expo-image";
 
 const FollowComponent = (Props: { user: UserData }) => {
   return (
@@ -26,9 +27,11 @@ const FollowComponent = (Props: { user: UserData }) => {
     >
       <Image
         source={{ uri: Props.user.avatar_url }}
-        width={40}
-        borderRadius={40}
-        height={40}
+        style={{
+          width: 40,
+          height: 40,
+          borderRadius: 40,
+        }}
       />
       <View>
         <Text style={{ fontFamily: "eudoxus", textAlign: "right" }}>

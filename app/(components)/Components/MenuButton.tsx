@@ -22,7 +22,7 @@ const MenuButton = ({
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   const buttonValue = useSharedValue(1);
-  const colorValue = useSharedValue("#FFF")
+  const colorValue = useSharedValue("#eee");
 
   const buttonAnimation = useAnimatedStyle(() => ({
     transform: [
@@ -36,7 +36,7 @@ const MenuButton = ({
     backgroundColor: withTiming(colorValue.value, {
       duration: 400,
       easing: Easing.inOut(Easing.quad),
-    } )
+    }),
   }));
 
   return (
@@ -46,20 +46,16 @@ const MenuButton = ({
       }}
       onPressIn={() => {
         buttonValue.value = 0.95;
-        colorValue.value = "#DDD"
+        colorValue.value = "#DDD";
       }}
       onPressOut={() => {
         buttonValue.value = 1;
-        colorValue.value = "#FFF"
+        colorValue.value = "#eee";
       }}
       style={[
         buttonAnimation,
         {
           width: "49%",
-          shadowColor: "#000",
-          shadowOffset: { width: 0, height: 0 },
-          shadowOpacity: 0.7,
-          shadowRadius: 3,
           height: "100%",
           justifyContent: "center",
           alignItems: "center",

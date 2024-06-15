@@ -78,34 +78,34 @@ const UpcomingEvent = () => {
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.7,
         shadowRadius: 3,
-        borderRadius: 10,
       }}
     >
       <Image
         src={event?.image?.url}
         style={{
           width: "100%",
-          height: 52,
-          borderTopRightRadius: 10,
-          borderTopLeftRadius: 10,
+          height: 100,
         }}
       />
       <View style={{ padding: 8 }}>
-        <Text style={{ fontWeight: "bold" }}>
-          UPCOMING IN{" "}
+        <Text style={{ fontFamily: "eudoxus" }}>
+          In{" "}
           {now.getMonth() < date.getMonth()
-            ? `${date.getMonth() - now.getMonth()} MONTHS`
+            ? `${date.getMonth() - now.getMonth()} Months`
             : now.getDate() < date.getDate()
-            ? `${date.getDate() - now.getDate()} DAYS`
+            ? `${date.getDate() - now.getDate()} Days`
             : now.getHours() < date.getHours()
             ? `${date.getHours() - now.getHours()} ${
-                date.getHours() - now.getHours() === 1 ? "HOUR" : "HOURS"
+                date.getHours() - now.getHours() === 1 ? "Hour" : "Hours"
               }`
             : event.end && new Date(event.end).getTime() > now.getTime()
-            ? `${date.getMinutes() - now.getMinutes()} MINUTES`
+            ? `${date.getMinutes() - now.getMinutes()} Minutes`
             : "ONGOING EVENT"}
+          :
         </Text>
-        <Text style={{ fontFamily: "eudoxus" }}>{event.name}</Text>
+        <Text style={{ fontFamily: "eudoxus", color: "#333" }}>
+          {event.name}
+        </Text>
       </View>
     </Animated.View>
   );

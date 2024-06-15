@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Pressable,
-  Image,
   Dimensions,
   ScrollView,
 } from "react-native";
@@ -14,8 +13,7 @@ import { supabase } from "../../../../supabase";
 import { PostType } from "../../../(components)/Post";
 import { LinearGradient } from "expo-linear-gradient";
 import { type FileObject } from "@supabase/storage-js";
-import CarouselData from "../../../(auth)/CarouselData";
-import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
 import Carousel from "react-native-reanimated-carousel/src/Carousel";
 
 const Post = () => {
@@ -90,22 +88,25 @@ const Post = () => {
         {image && (
           <Carousel
             width={width - 40}
-            height={400}
+            height={300}
             panGestureHandlerProps={{
               activeOffsetX: [-30, 20],
             }}
             autoPlay
-            loop
             autoPlayInterval={6000}
-            mode={"parallax"}
             data={image}
             renderItem={({ item }) => (
               <View style={{ padding: 5 }}>
                 <Image
-                  borderRadius={50}
-                  src={`https://gnmpzioggytlqzekuyßuo.supabase.co/storage/v1/object/public/postPictures/${id}/${item.name}`}
+                  source={{
+                    uri: `https://gnmpzioggytlqzekuyuo.supabase.co/storage/v1/object/public/postPictures/${id}/${item.name}`,
+                  }}
                   alt={item.name}
-                  style={{ width: "100%", height: 400, objectFit: "cover" }}
+                  style={{
+                    width: "100%",
+                    height: 300,
+                    objectFit: "cover",
+                  }}
                 />
               </View>
             )}
@@ -113,6 +114,7 @@ const Post = () => {
         )}
 
         <ScrollView contentContainerStyle={{}}>
+          <Text style={{ fontFamily: "eudoxus" }}>Post Content</Text>
           {post.data.data.map((item: any, index: number) => {
             switch (item.type) {
               case "text":

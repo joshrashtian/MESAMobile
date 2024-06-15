@@ -38,7 +38,7 @@ const RootLayout = () => {
     <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
       <AuthContextProvider>
         <Slot />
-        <StatusBar />
+        <StatusBar style="auto" />
       </AuthContextProvider>
     </GestureHandlerRootView>
   );
