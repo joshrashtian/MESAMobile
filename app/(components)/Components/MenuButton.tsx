@@ -14,10 +14,12 @@ const MenuButton = ({
   link,
   title,
   icon,
+  func,
 }: {
-  link: any;
+  link?: any;
   title: string;
   icon: any;
+  func?: () => void;
 }) => {
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 

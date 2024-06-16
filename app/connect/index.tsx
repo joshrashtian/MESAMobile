@@ -1,11 +1,12 @@
 import {
+  Dimensions,
   Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { memo, useCallback, useMemo } from "react";
+import React, { memo, useCallback, useMemo, useState } from "react";
 import { ContextProps, useUser } from "../(contexts)/AuthContext";
 import UpcomingEvent from "../(components)/FrontPage/UpcomingEvent";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,6 +23,8 @@ import { router } from "expo-router";
 import CarouselTopPage from "../(components)/FrontPage/CarouselTopPage";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { LinearGradient } from "expo-linear-gradient";
+import RecentNews from "../(components)/FrontPage/RecentNews";
+import NewBottomSheet from "../(components)/FrontPage/BottomSheet";
 
 const ConnectHome = () => {
   const user: ContextProps = useUser();
@@ -38,8 +41,6 @@ const ConnectHome = () => {
     ),
     []
   );
-
-  const points = useMemo(() => ["15%", "33%", "52%"], []);
 
   return (
     <View style={styles.core}>
@@ -95,41 +96,7 @@ const ConnectHome = () => {
       <View>
         <CarouselTopPage />
       </View>
-
-      <BottomSheet
-        snapPoints={points}
-        handleIndicatorStyle={{ backgroundColor: "#fff" }}
-        onAnimate={(fromIndex: number, toIndex: number) =>
-          console.log(fromIndex, toIndex)
-        }
-        index={1}
-      >
-        <View>
-          <View
-            style={{
-              height: 50,
-              width: "100%",
-              padding: 2,
-              flexDirection: "row",
-              flexWrap: "wrap",
-              gap: 3,
-              borderRadius: 10,
-              justifyContent: "center",
-            }}
-          >
-            <MenuButton
-              link={"/connect/Social/"}
-              title="Social"
-              icon="people"
-            />
-            <MenuButton
-              link={"/connect/Event/ForYouEvents/"}
-              title="Events For You"
-              icon="calendar"
-            />
-          </View>
-        </View>
-      </BottomSheet>
+      <NewBottomSheet />
     </View>
   );
 };
