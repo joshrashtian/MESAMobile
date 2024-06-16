@@ -3,7 +3,7 @@
     "name": "MESAMobile",
     "slug": "MESAMobile",
     "scheme": "MESAMobile",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -18,7 +18,7 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "io.mesaconnect.mobile",
-      "buildNumber": "2"
+      "buildNumber": "4"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,7 +28,8 @@
       "softwareKeyboardLayoutMode": "pan",
       "permissions": [
         "android.permission.RECORD_AUDIO"
-      ]
+      ],
+      "package": "io.mesaconnect.mobile"
     },
     "web": {
       "favicon": "./assets/favicon.png"
