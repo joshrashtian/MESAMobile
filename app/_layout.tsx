@@ -21,6 +21,7 @@ const RootLayout = () => {
   // prettier-ignore
   const [fontsLoaded, fontLoadError] = useFonts({
     'eudoxus': require("../assets/fonts/EudoxusSans-Medium.ttf"),
+    'eudoxusbold': require("../assets/fonts/EudoxusSans-Bold-BF659b6cb1408e5.ttf"),
     'mono': require("../assets/fonts/JetBrainsMono-Medium.ttf")
   });
 

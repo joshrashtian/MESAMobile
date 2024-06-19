@@ -1,14 +1,66 @@
-import { View, Text, Dimensions } from "react-native";
-import React, { useMemo } from "react";
+import { View, Text, Dimensions, FlatList, Pressable } from "react-native";
+import React, { useEffect, useMemo, useState } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 import RecentNews from "./RecentNews";
 import MenuButton from "../Components/MenuButton";
+import Animated, {
+  FadeIn,
+  FadeInDown,
+  FadeInUp,
+  SlideInDown,
+  SlideInUp,
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+  withTiming,
+  ZoomInEasyUp,
+} from "react-native-reanimated";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 const NewBottomSheet = () => {
-  const points = useMemo(() => ["22%", "33%", "52%"], []);
+  const [pos, setPos] = useState<number>(1);
+  const points = useMemo(() => ["22%", "33%", "54%"], []);
+
+  const buttons = useMemo(
+    () => [
+      {
+        icon: <Ionicons name="settings" size={24} color="#FFF" />,
+        colors: ["#4867B7", "#6048B7", "#489FB7"],
+      },
+    ],
+    [pos]
+  );
+
+  useEffect(() => {
+    switch (pos) {
+      case 0:
+        bottomPanelHeight.value = 0;
+        bottomPanelOpacity.value = 0;
+        break;
+      case 1:
+        bottomPanelHeight.value = 50;
+        bottomPanelOpacity.value = 1;
+        break;
+      case 2:
+        bottomPanelHeight.value = 225;
+        bottomPanelOpacity.value = 1;
+        break;
+    }
+  }, [pos]);
+
+  const bottomPanelHeight = useSharedValue(0);
+  const bottomPanelOpacity = useSharedValue(1);
+
+  const bottomPanelStyle = useAnimatedStyle(() => ({
+    height: withTiming(bottomPanelHeight.value),
+    opacity: withTiming(bottomPanelOpacity.value),
+  }));
+
   return (
     <BottomSheet
       snapPoints={points}
+      onChange={(index: number) => setPos(index)}
       handleIndicatorStyle={{
         backgroundColor: "#ddd",
         width: 25,
@@ -96,8 +148,35 @@ const NewBottomSheet = () => {
             icon="calendar"
           />
         </View>
-        <View style={{ margin: 20 }}>
-          <Text>Other Features</Text>
+        <View style={{ padding: 20 }}>
+          {pos > 0 && (
+            <Animated.View
+              style={[
+                { backgroundColor: "#f9f9f9", borderRadius: 20 },
+                bottomPanelStyle,
+              ]}
+            >
+              {/*<FlatList
+                data={buttons}
+                renderItem={({ item }) => (
+                  <Pressable>
+                    <LinearGradient
+                      colors={item.colors}
+                      style={{
+                        width: 32,
+                        height: 32,
+                        borderRadius: 10,
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      {item.icon}
+                    </LinearGradient>
+                  </Pressable>
+                )}
+                    />*/}
+            </Animated.View>
+          )}
         </View>
       </View>
     </BottomSheet>

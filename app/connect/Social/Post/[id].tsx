@@ -7,7 +7,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import { Link, router, useLocalSearchParams } from "expo-router";
+import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
 import { supabase } from "../../../../supabase";
 import { PostType } from "../../../(components)/Post";

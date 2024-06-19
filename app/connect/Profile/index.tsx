@@ -15,7 +15,7 @@ const PersonalProfile = () => {
   if (!data) return <Loading />;
   return (
     <View style={styles.core}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <Header user={data} visibility={true} />
         <Pressable onPress={() => router.push("/connect/Profile/Following")}>
           <LinearGradient
@@ -43,7 +43,7 @@ const PersonalProfile = () => {
 
 const styles = StyleSheet.create({
   core: {
-    padding: 20,
+    paddingHorizontal: 20,
     flex: 1,
   },
 });

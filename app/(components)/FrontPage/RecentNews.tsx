@@ -73,15 +73,13 @@ const RecentNews = () => {
     <AnimatedPressable
       onPress={() => {
         openBrowserAsync(`https://mesaconnect.io/news?arid=${article?.id}`);
-        buttonValue.value = 1;
+
         colorValue.value = "#eee";
       }}
       onPressIn={() => {
-        buttonValue.value = 0.95;
         colorValue.value = "#DDD";
       }}
       onPressOut={() => {
-        buttonValue.value = 1;
         colorValue.value = "#eee";
       }}
       style={[

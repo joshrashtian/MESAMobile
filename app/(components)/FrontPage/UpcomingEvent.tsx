@@ -88,8 +88,8 @@ const UpcomingEvent = () => {
         }}
       />
       <View style={{ padding: 8 }}>
-        <Text style={{ fontFamily: "eudoxus" }}>
-          In{" "}
+        <Text style={{ fontFamily: "eudoxusbold" }}>
+          Coming Up In{" "}
           {now.getMonth() < date.getMonth()
             ? `${date.getMonth() - now.getMonth()} Months`
             : now.getDate() < date.getDate()
@@ -101,7 +101,6 @@ const UpcomingEvent = () => {
             : event.end && new Date(event.end).getTime() > now.getTime()
             ? `${date.getMinutes() - now.getMinutes()} Minutes`
             : "ONGOING EVENT"}
-          :
         </Text>
         <Text style={{ fontFamily: "eudoxus", color: "#333" }}>
           {event.name}

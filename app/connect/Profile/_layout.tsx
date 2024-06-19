@@ -5,9 +5,20 @@ import { Stack } from "expo-router";
 const LayoutProfile = () => {
   return (
     <Stack
-      screenOptions={{ headerShown: false, contentStyle: { paddingTop: 40 } }}
+      screenOptions={{
+        headerShown: false,
+        headerTitle: ({ children }) => (
+          <Text style={{ fontFamily: "eudoxus", fontSize: 16 }}>
+            {children}
+          </Text>
+        ),
+        contentStyle: { paddingTop: 40 },
+      }}
     >
-      <Stack.Screen name="index" />
+      <Stack.Screen
+        name="index"
+        options={{ headerShown: true, title: "Your Profile" }}
+      />
       <Stack.Screen
         name="Profile/[id]"
         options={{
