@@ -32,7 +32,7 @@ const Post = ({ post }: { post: PostType }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        router.push(`/connect/Social/Post/${post.id}`);
+        router.push(`/connect/Post/${post.id}`);
       }}
     >
       <LinearGradient

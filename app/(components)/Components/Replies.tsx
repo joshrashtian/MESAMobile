@@ -5,7 +5,10 @@ import { useUser } from "../../(contexts)/AuthContext";
 import Reply from "./Reply";
 import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
 
-const Replies = (Props: { id: string; creatorid: string }) => {
+const Replies = (Props: {
+  id: string | string[] | undefined;
+  creatorid: string;
+}) => {
   const [data, setData] = useState<any[]>();
   const { user } = useUser();
   useEffect(() => {
