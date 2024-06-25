@@ -1,13 +1,15 @@
 import {
+  Dimensions,
   Image,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useWindowDimensions,
   View,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 export const months = [
   "Jan",
@@ -48,25 +50,24 @@ const EventComponent = ({
   event: EventType;
   color: string;
 }) => {
-  const window = useWindowDimensions();
-
   return (
-    <Link
-      href={`/connect/Event/Modal/${event.id}`}
+    <TouchableOpacity
+      onPress={() => router.push(`/connect/Event/Modal/${event.id}`)}
       style={{
         shadowColor: "#777",
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.5,
+        width: "100%",
         shadowRadius: 1,
+        minWidth: "100%",
       }}
     >
       <LinearGradient
         style={{
           backgroundColor: "#FFF",
           justifyContent: "space-between",
-          borderRadius: 20,
           height: 240,
-          width: window.width - 20,
+          width: "100%",
         }}
         colors={[color, "transparent"]}
       >
@@ -75,8 +76,6 @@ const EventComponent = ({
           style={{
             width: "100%",
             height: "50%",
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
           }}
         />
         <View
@@ -103,7 +102,7 @@ const EventComponent = ({
           </Text>
         </View>
       </LinearGradient>
-    </Link>
+    </TouchableOpacity>
   );
 };
 

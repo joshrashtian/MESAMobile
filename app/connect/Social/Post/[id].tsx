@@ -15,6 +15,8 @@ import { LinearGradient } from "expo-linear-gradient";
 import { type FileObject } from "@supabase/storage-js";
 import { Image } from "expo-image";
 import Carousel from "react-native-reanimated-carousel/src/Carousel";
+import { Ionicons } from "@expo/vector-icons";
+import Replies from "../../../(components)/Components/Replies";
 
 const Post = () => {
   const [post, setPost] = useState<PostType>();
@@ -61,29 +63,69 @@ const Post = () => {
   if (!post) return <ActivityIndicator />;
   return (
     <LinearGradient
-      style={{ flex: 1, paddingHorizontal: 10, paddingTop: 30 }}
+      style={{ flex: 1, paddingHorizontal: 10, paddingTop: 30, gap: 4 }}
       colors={[
         "transparent", //"rgba(255, 99, 71,0.3)"
       ]}
     >
-      <Text style={{ fontFamily: "eudoxus", fontSize: 24 }}>{post.title}</Text>
-      <Pressable
+      <Text
         style={{
-          flexDirection: "row",
-          gap: 4,
-          justifyContent: "space-between",
-        }}
-        onPress={() => {
-          router.push(`/connect/Profile/Profile/${post.userid}`);
+          fontFamily: "eudoxusbold",
+          color: "rgba(240, 0, 0, 0.6)",
+          fontSize: 24,
         }}
       >
-        <Text style={{ fontFamily: "eudoxus", fontSize: 14 }}>
-          by {post.creator.realname}
+        {post.title}
+      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Pressable
+          style={{
+            flexDirection: "row",
+            gap: 4,
+            backgroundColor: "#eee",
+            padding: 4,
+            paddingHorizontal: 10,
+            borderRadius: 10,
+            justifyContent: "space-between",
+          }}
+          onPress={() => {
+            router.push(`/connect/Profile/Profile/${post.userid}`);
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "eudoxus",
+              fontSize: 14,
+              gap: 5,
+              flexDirection: "row",
+              justifyContent: "center",
+              alignContent: "center",
+            }}
+          >
+            <Ionicons name="person-circle-outline" size={14} />{" "}
+            {post.creator.realname}
+          </Text>
+        </Pressable>
+        <Text
+          style={{
+            fontFamily: "eudoxus",
+            justifyContent: "center",
+            alignContent: "center",
+            fontSize: 14,
+            gap: 5,
+            flexDirection: "row",
+          }}
+        >
+          <Ionicons name="calendar-number" size={14} />
+          {"  "}
+          {new Date(post.created_at).toLocaleDateString()}
         </Text>
-        <Text style={{ fontFamily: "eudoxus", fontSize: 14 }}>
-          Posted {new Date(post.created_at).toLocaleDateString()}
-        </Text>
-      </Pressable>
+      </View>
       <View style={{ flex: 1, flexDirection: "column" }}>
         {image && (
           <Carousel
@@ -93,6 +135,9 @@ const Post = () => {
               activeOffsetX: [-30, 20],
             }}
             autoPlay
+            style={{
+              backgroundColor: "#ddd",
+            }}
             autoPlayInterval={6000}
             data={image}
             renderItem={({ item }) => (
@@ -113,46 +158,56 @@ const Post = () => {
           />
         )}
 
-        <ScrollView contentContainerStyle={{}}>
-          <Text style={{ fontFamily: "eudoxus" }}>Post Content</Text>
-          {post.data.data.map((item: any, index: number) => {
-            switch (item.type) {
-              case "text":
-                return (
-                  <Text style={{ fontFamily: "eudoxus" }} key={index}>
-                    {item.text}
-                  </Text>
-                );
-
-              case "code":
-                return (
-                  <View
-                    style={{
-                      backgroundColor: "#433",
-                      padding: 10,
-                      borderRadius: 10,
-                      shadowColor: "#000",
-                      shadowOffset: { width: 0, height: 0 },
-                      shadowOpacity: 0.7,
-                      shadowRadius: 2,
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontFamily: "mono",
-                        color: "#fff",
-                      }}
-                      key={index}
-                    >
+        <ScrollView contentContainerStyle={{ flex: 1, gap: 7 }}>
+          <View
+            style={{
+              backgroundColor: "#eee",
+              borderRadius: 20,
+              padding: 20,
+              gap: 10,
+            }}
+          >
+            {post.data.data.map((item: any, index: number) => {
+              switch (item.type) {
+                case "text":
+                  return (
+                    <Text style={{ fontFamily: "eudoxus" }} key={index}>
                       {item.text}
                     </Text>
-                  </View>
-                );
+                  );
 
-              default:
-                return null;
-            }
-          })}
+                case "code":
+                  return (
+                    <View
+                      style={{
+                        backgroundColor: "#112",
+                        padding: 10,
+                        borderRadius: 10,
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 1 },
+                        shadowOpacity: 0.3,
+                        shadowRadius: 6,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontFamily: "mono",
+                          color: "#fff",
+                          fontSize: 11,
+                        }}
+                        key={index}
+                      >
+                        {item.text}
+                      </Text>
+                    </View>
+                  );
+
+                default:
+                  return null;
+              }
+            })}
+          </View>
+          <Replies id={id} creatorid={post.userid} />
         </ScrollView>
       </View>
     </LinearGradient>
