@@ -52,7 +52,7 @@ const EventComponent = ({
 }) => {
   return (
     <TouchableOpacity
-      onPress={() => router.push(`/connect/Event/Modal/${event.id}`)}
+      onPress={() => router.push(`/connect/EventModal/${event.id}`)}
       style={{
         shadowColor: "#777",
         shadowOffset: { width: 0, height: 1 },
@@ -66,18 +66,21 @@ const EventComponent = ({
         style={{
           backgroundColor: "#FFF",
           justifyContent: "space-between",
-          height: 240,
           width: "100%",
         }}
-        colors={[color, "transparent"]}
+        colors={["transparent", "transparent"]}
       >
-        <Image
-          src={event?.image?.url}
-          style={{
-            width: "100%",
-            height: "50%",
-          }}
-        />
+        {event.image ? (
+          <Image
+            src={event?.image?.url}
+            style={{
+              width: "100%",
+              height: "50%",
+            }}
+          />
+        ) : (
+          <View />
+        )}
         <View
           style={{
             padding: 16,
@@ -86,19 +89,23 @@ const EventComponent = ({
           }}
         >
           <Text
-            style={{ fontWeight: "600", fontSize: 18, fontFamily: "eudoxus" }}
+            style={{
+              fontWeight: "600",
+              fontSize: 18,
+              fontFamily: "eudoxusbold",
+            }}
           >
             {event.name}
           </Text>
-          <Text style={{ color: "#888" }}>
+          <Text style={{ color: "#888", fontFamily: "eudoxus" }}>
             {event.desc?.slice(0, 100)}
             <Text style={{ color: "#aaa" }}>
               {event.desc?.length > 90 && "..."}
             </Text>
           </Text>
-          <Text style={{ fontFamily: "mono" }}>
+          <Text style={{ fontFamily: "eudoxus" }}>
             {months[new Date(event.start).getMonth()]}{" "}
-            {new Date(event.start).getDate()}
+            {new Date(event.start).getDate()} / {event.tags[0]}
           </Text>
         </View>
       </LinearGradient>

@@ -1,10 +1,10 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import Animated, { Easing, FadeInUp } from "react-native-reanimated";
 import { useUser } from "../../(contexts)/AuthContext";
 import { supabase } from "../../../supabase";
 import { EventType } from "../EventComponent";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 
 const UpcomingEvent = () => {
   const user = useUser();
@@ -70,43 +70,47 @@ const UpcomingEvent = () => {
   const now = new Date(Date.now());
 
   return (
-    <Animated.View
-      entering={FadeInUp.easing(Easing.inOut(Easing.quad))}
-      style={{
-        backgroundColor: "#fff",
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.7,
-        shadowRadius: 3,
-      }}
+    <TouchableOpacity
+      onPress={() => router.push(`/connect/EventModal/${event.id}`)}
     >
-      <Image
-        src={event?.image?.url}
+      <Animated.View
+        entering={FadeInUp.easing(Easing.inOut(Easing.quad))}
         style={{
-          width: "100%",
-          height: 100,
+          backgroundColor: "#fff",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.7,
+          shadowRadius: 3,
         }}
-      />
-      <View style={{ padding: 8 }}>
-        <Text style={{ fontFamily: "eudoxusbold" }}>
-          Coming Up In{" "}
-          {now.getMonth() < date.getMonth()
-            ? `${date.getMonth() - now.getMonth()} Months`
-            : now.getDate() < date.getDate()
-            ? `${date.getDate() - now.getDate()} Days`
-            : now.getHours() < date.getHours()
-            ? `${date.getHours() - now.getHours()} ${
-                date.getHours() - now.getHours() === 1 ? "Hour" : "Hours"
-              }`
-            : event.end && new Date(event.end).getTime() > now.getTime()
-            ? `${date.getMinutes() - now.getMinutes()} Minutes`
-            : "ONGOING EVENT"}
-        </Text>
-        <Text style={{ fontFamily: "eudoxus", color: "#333" }}>
-          {event.name}
-        </Text>
-      </View>
-    </Animated.View>
+      >
+        <Image
+          src={event?.image?.url}
+          style={{
+            width: "100%",
+            height: 100,
+          }}
+        />
+        <View style={{ padding: 8 }}>
+          <Text style={{ fontFamily: "eudoxusbold" }}>
+            Coming Up In{" "}
+            {now.getMonth() < date.getMonth()
+              ? `${date.getMonth() - now.getMonth()} Months`
+              : now.getDate() < date.getDate()
+              ? `${date.getDate() - now.getDate()} Days`
+              : now.getHours() < date.getHours()
+              ? `${date.getHours() - now.getHours()} ${
+                  date.getHours() - now.getHours() === 1 ? "Hour" : "Hours"
+                }`
+              : event.end && new Date(event.end).getTime() > now.getTime()
+              ? `${date.getMinutes() - now.getMinutes()} Minutes`
+              : "ONGOING EVENT"}
+          </Text>
+          <Text style={{ fontFamily: "eudoxus", color: "#333" }}>
+            {event.name}
+          </Text>
+        </View>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 

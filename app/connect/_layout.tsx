@@ -5,7 +5,7 @@ export default function RootConnectLayout() {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="Settings" />
-      <Stack.Screen name="Post/[id]" options={{ presentation: "modal" }} />
+      <Stack.Screen name="(modals)" options={{ presentation: "modal" }} />
     </Stack>
   );
 }

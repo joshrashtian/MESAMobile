@@ -9,14 +9,14 @@ import {
 } from "react-native";
 import { router, useLocalSearchParams } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
-import { supabase } from "../../../supabase";
-import { PostType } from "../../(components)/Post";
+import { supabase } from "../../../../supabase";
+import { PostType } from "../../../(components)/Post";
 import { LinearGradient } from "expo-linear-gradient";
 import { type FileObject } from "@supabase/storage-js";
 import { Image } from "expo-image";
 import Carousel from "react-native-reanimated-carousel/src/Carousel";
 import { Ionicons } from "@expo/vector-icons";
-import Replies from "../../(components)/Components/Replies";
+import Replies from "../../../(components)/Components/Replies";
 
 const Post = () => {
   const [post, setPost] = useState<PostType>();

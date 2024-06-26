@@ -1,4 +1,10 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { Image } from "expo-image";
 import React, {
   useCallback,
@@ -10,15 +16,16 @@ import React, {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import EventComponent, {
   EventType,
-} from "../../../../(components)/EventComponent";
-import { supabase } from "../../../../../supabase";
+} from "../../../(components)/EventComponent";
+import { supabase } from "../../../../supabase";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { LinearGradient } from "expo-linear-gradient";
-import { useUser } from "../../../../(contexts)/AuthContext";
+import { useUser } from "../../../(contexts)/AuthContext";
 import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
 import { BottomSheetBackgroundProps } from "@gorhom/bottom-sheet";
-import { addInterest, onInterestLost } from "../EventInterests";
+import { addInterest, onInterestLost } from "../../(tabs)/Event/EventInterests";
 import { Ionicons } from "@expo/vector-icons";
+import UserId from "./UserId";
 
 const EventModal = () => {
   const [event, setEvent] = useState<EventType>();
@@ -97,25 +104,44 @@ const EventModal = () => {
   };
 
   return (
-    <View
-      style={{ justifyContent: "space-between", flex: 1, paddingBottom: 30 }}
-    >
+    <View style={{ flex: 1, paddingBottom: 30 }}>
       <View>
         {event.image && (
           <Image
             style={{
               width: "100%",
-              height: "40%",
+              height: 200,
               top: 0,
               left: 0,
+              borderBottomLeftRadius: 30,
+              borderBottomRightRadius: 30,
             }}
             source={{ uri: event?.image?.url }}
           />
         )}
-        <View style={{ padding: 20, gap: 10, flexDirection: "column" }}>
-          <Text style={{ fontFamily: "eudoxus", fontSize: 32 }}>
+        <ScrollView
+          contentContainerStyle={{
+            padding: 20,
+            gap: 10,
+
+            flexDirection: "column",
+          }}
+        >
+          <Text
+            style={{
+              fontFamily: "eudoxusbold",
+              fontSize: 32,
+              color: "rgb(37 99 235)",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 0 },
+              shadowOpacity: 0.3,
+              shadowRadius: 5,
+              elevation: 10,
+            }}
+          >
             {event.name}
           </Text>
+          <UserId userid={event.creator} />
           <Text style={styles.secondary}>{event.desc}</Text>
           <Text style={styles.date}>
             <Ionicons name="calendar" size={16} />{" "}
@@ -131,9 +157,11 @@ const EventModal = () => {
           <Text style={styles.date}>
             <Ionicons name="pin-outline" size={16} /> {event.location}
           </Text>
-        </View>
+        </ScrollView>
       </View>
-      <View style={{ padding: 20 }}>
+      <View
+        style={{ padding: 20, position: "absolute", bottom: 40, width: "100%" }}
+      >
         <TouchableOpacity
           style={{ width: "100%", height: 48, padding: 3 }}
           onPress={() => {
