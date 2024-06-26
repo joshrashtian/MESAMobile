@@ -1,10 +1,9 @@
-
-import React from 'react';
-import { View, Text } from 'react-native';
-import {Stack} from "expo-router";
+import React from "react";
+import { View, Text } from "react-native";
+import { Stack } from "expo-router";
 
 const SettingsLayout = () => {
-  return(
+  return (
     <Stack
       screenOptions={{
         headerShown: true,
@@ -15,17 +14,20 @@ const SettingsLayout = () => {
           <Text style={{ fontFamily: "eudoxus", fontSize: 16 }}>
             {children}
           </Text>
-          ),
+        ),
         headerStyle: { backgroundColor: "#fff" },
         contentStyle: {
           flex: 1,
           backgroundColor: "#f9f9f9",
-
         },
-
-      }}>
-      <Stack.Screen name="index" options={{ title: 'Settings',  presentation: 'modal',}} />
-      </Stack>
+        presentation: "modal",
+      }}
+    >
+      <Stack.Screen
+        name="index"
+        options={{ title: "Settings", presentation: "modal" }}
+      />
+    </Stack>
   );
 };
 

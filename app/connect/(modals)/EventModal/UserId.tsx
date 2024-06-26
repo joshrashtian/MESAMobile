@@ -44,7 +44,16 @@ const UserId = ({ userid }: { userid: string }) => {
           backgroundColor: "#AAA",
         }}
       />
-      <Text style={{ fontFamily: "eudoxusbold", color: "#55A" }}>
+      <Text
+        style={{
+          fontFamily: "eudoxusbold",
+          color: "rgba(25, 55, 160, 0.8)",
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.3,
+          shadowRadius: 5,
+        }}
+      >
         Created by {name?.real_name}
       </Text>
     </View>

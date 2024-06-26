@@ -12,6 +12,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { supabase } from "../supabase";
 import { StatusBar } from "expo-status-bar";
+import { Provider } from "./(contexts)/Provider";
 
 const RootLayout = () => {
   SplashScreen.preventAutoHideAsync();
@@ -37,10 +38,10 @@ const RootLayout = () => {
 
   return (
     <GestureHandlerRootView onLayout={onLayoutRootView} style={{ flex: 1 }}>
-      <AuthContextProvider>
+      <Provider>
         <Slot />
         <StatusBar style="auto" />
-      </AuthContextProvider>
+      </Provider>
     </GestureHandlerRootView>
   );
 };

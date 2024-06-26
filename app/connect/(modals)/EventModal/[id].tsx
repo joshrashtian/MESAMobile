@@ -97,7 +97,6 @@ const EventModal = () => {
     const { error } = await onInterestLost(user, event.id);
     if (!error) {
       bottomSheetRef.current?.close();
-      router.dismissAll();
     } else {
       console.log(error);
     }
@@ -133,8 +132,8 @@ const EventModal = () => {
               fontSize: 32,
               color: "rgb(37 99 235)",
               shadowColor: "#000",
-              shadowOffset: { width: 0, height: 0 },
-              shadowOpacity: 0.3,
+              shadowOffset: { width: 0, height: 4 },
+              shadowOpacity: 0.4,
               shadowRadius: 5,
               elevation: 10,
             }}
@@ -142,21 +141,49 @@ const EventModal = () => {
             {event.name}
           </Text>
           <UserId userid={event.creator} />
-          <Text style={styles.secondary}>{event.desc}</Text>
-          <Text style={styles.date}>
-            <Ionicons name="calendar" size={16} />{" "}
-            {new Date(event.start).toLocaleDateString()} at{" "}
-            {new Date(event.start).getHours() < 10
-              ? `0${new Date(event.start).getHours()}`
-              : new Date(event.start).getHours()}
-            :
-            {new Date(event.start).getMinutes() < 10
-              ? `0${new Date(event.start).getMinutes()}`
-              : new Date(event.start).getMinutes()}
-          </Text>
-          <Text style={styles.date}>
-            <Ionicons name="pin-outline" size={16} /> {event.location}
-          </Text>
+          <View
+            style={{
+              gap: 2,
+              padding: 15,
+              backgroundColor: "#fff",
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ fontFamily: "eudoxusbold", marginBottom: 10 }}>
+              About This Event
+            </Text>
+            <Text style={styles.secondary}>{event.desc}</Text>
+          </View>
+          <View
+            style={{
+              gap: 2,
+              padding: 15,
+              backgroundColor: "#fff",
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ fontFamily: "eudoxusbold", marginBottom: 10 }}>
+              Details
+            </Text>
+            <Text style={styles.date}>
+              <Ionicons name="calendar" size={16} />{" "}
+              {new Date(event.start).toLocaleDateString()} at{" "}
+              {new Date(event.start).getHours() < 10
+                ? `0${new Date(event.start).getHours()}`
+                : new Date(event.start).getHours()}
+              :
+              {new Date(event.start).getMinutes() < 10
+                ? `0${new Date(event.start).getMinutes()}`
+                : new Date(event.start).getMinutes()}{" "}
+              {new Date(event.start).getHours() < 12 ? "AM" : "PM"}
+            </Text>
+            <Text style={styles.date}>
+              <Ionicons name="pin-outline" size={16} /> {event.location}
+            </Text>
+            <Text style={styles.date}>
+              <Ionicons name="book" size={16} /> {event.type}
+            </Text>
+          </View>
         </ScrollView>
       </View>
       <View
@@ -175,6 +202,8 @@ const EventModal = () => {
               height: "100%",
               justifyContent: "center",
               alignItems: "center",
+              flexDirection: "row",
+              gap: 5,
               borderRadius: 10,
               shadowColor: "#000",
               shadowOffset: { width: 0, height: 1 },
@@ -183,8 +212,13 @@ const EventModal = () => {
             }}
             colors={["rgb(37 99 235)", "rgb(67 56 202)"]}
           >
+            <Ionicons
+              name={state === 0 ? "person-add" : "pencil"}
+              size={15}
+              color="#FFF"
+            />
             <Text style={{ fontFamily: "eudoxus", color: "#fff" }}>
-              {state === 0 ? "I'M INTERESTED" : "VIEW DETAILS"}
+              {state === 0 ? "I'M INTERESTED" : "EDIT STANDING"}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
@@ -271,17 +305,19 @@ export default EventModal;
 
 const styles = StyleSheet.create({
   secondary: {
-    fontSize: 20,
+    fontSize: 15,
     color: "#8c8c8c",
     fontFamily: "eudoxus",
   },
   date: {
     padding: 3,
     paddingHorizontal: 6,
-    backgroundColor: "#eee",
+    backgroundColor: "#dedede",
     alignItems: "center",
-    fontSize: 20,
-    fontFamily: "mono",
+    fontSize: 15,
+    fontFamily: "eudoxus",
+    flexDirection: "row",
     color: "#000",
+    borderRadius: 50,
   },
 });

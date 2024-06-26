@@ -2,7 +2,7 @@ import { createContext, FC, useEffect, useState } from "react";
 
 export const SettingContext = createContext({});
 
-const SettingsContextProvider = ({
+export const SettingsContextProvider = ({
   children,
 }: {
   children: React.ReactNode;
