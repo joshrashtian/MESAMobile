@@ -26,6 +26,7 @@ import { BottomSheetBackgroundProps } from "@gorhom/bottom-sheet";
 import { addInterest, onInterestLost } from "../../(tabs)/Event/EventInterests";
 import { Ionicons } from "@expo/vector-icons";
 import UserId from "./UserId";
+import { useDialog } from "../../../(contexts)/DialogBox";
 
 const EventModal = () => {
   const [event, setEvent] = useState<EventType>();
@@ -35,7 +36,7 @@ const EventModal = () => {
   const bottomSheetRef = useRef<BottomSheet>();
   const user = useUser();
   const router = useRouter();
-
+  const { open } = useDialog();
   const backgroundBottomSheet = useCallback(
     (props: any) => (
       <LinearGradient
@@ -97,6 +98,7 @@ const EventModal = () => {
     const { error } = await onInterestLost(user, event.id);
     if (!error) {
       bottomSheetRef.current?.close();
+      setState(0);
     } else {
       console.log(error);
     }
@@ -278,7 +280,15 @@ const EventModal = () => {
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
-                lossOfInterest();
+                open({
+                  title: `Are you sure you want to unenroll in ${event.name}`,
+                  desc: "You can always rejoin later.",
+                  onConfirm() {
+                    lossOfInterest();
+                  },
+
+                  disengagable: true,
+                });
               }}
               style={{ backgroundColor: "#fff", padding: 10 }}
             >

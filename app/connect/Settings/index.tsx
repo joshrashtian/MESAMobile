@@ -33,7 +33,7 @@ const Settings = () => {
             desc: "Are you sure you want to delete your account?",
             disengagable: true,
             onConfirm: () => {
-              console.log("wow");
+              console.log("stop");
             },
           });
         }}

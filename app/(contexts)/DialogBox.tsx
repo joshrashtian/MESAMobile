@@ -3,13 +3,18 @@ import BottomSheet, {
   TouchableOpacity,
 } from "@gorhom/bottom-sheet";
 import { createContext, useContext, useMemo, useRef, useState } from "react";
-import { Text } from "react-native";
+import { Text, View } from "react-native";
 import { FullWindowOverlay } from "react-native-screens";
 
 export type DialogBoxProps = {
   onConfirm?: () => void;
   title: string;
   desc: string;
+  customButtons?: {
+    title: string;
+    onPress?: () => void;
+    confirm?: boolean;
+  }[];
   disengagable?: boolean;
 };
 
@@ -65,6 +70,7 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
       )}
       enablePanDownToClose={false}
       style={{ padding: 10 }}
+      backgroundStyle={{ backgroundColor: "#dedede" }}
       snapPoints={points}
       onClose={() => Props.finished()}
       index={0}
@@ -73,18 +79,58 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
         {Props.title}
       </Text>
       <Text>{Props.desc}</Text>
-      {Props.onConfirm && (
-        <TouchableOpacity
-          onPress={() => {
-            //@ts-ignore
-            Props.onConfirm();
-            //@ts-ignore
-            dialogRef.current.close();
-          }}
-        >
-          <Text>Okay</Text>
-        </TouchableOpacity>
-      )}
+      <View style={{ gap: 3, marginTop: 10 }}>
+        {!Props.customButtons ? (
+          <>
+            {Props.onConfirm && (
+              <>
+                <TouchableOpacity
+                  style={{ backgroundColor: "#fff", padding: 10 }}
+                  onPress={() => {
+                    //@ts-ignore
+                    Props.onConfirm();
+                    //@ts-ignore
+                    dialogRef.current.close();
+                  }}
+                >
+                  <Text style={{ fontFamily: "eudoxus" }}>Confirm</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ backgroundColor: "#fff", padding: 10 }}
+                  onPress={() => {
+                    //@ts-ignore
+                    dialogRef.current.close();
+                  }}
+                >
+                  <Text style={{ fontFamily: "eudoxus" }}>Cancel</Text>
+                </TouchableOpacity>
+              </>
+            )}
+          </>
+        ) : (
+          <>
+            {Props.customButtons.map((e) => (
+              <TouchableOpacity
+                style={{ backgroundColor: "#fff", padding: 10 }}
+                onPress={() => {
+                  if (e.confirm) {
+                    //@ts-ignore
+                    Props.onConfirm();
+                    //@ts-ignore
+                    dialogRef.current.close();
+                  } else
+                    e.onPress
+                      ? e.onPress()
+                      : //@ts-ignore
+                        dialogRef.current.close();
+                }}
+              >
+                <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
+              </TouchableOpacity>
+            ))}
+          </>
+        )}
+      </View>
     </BottomSheet>
   );
 };
