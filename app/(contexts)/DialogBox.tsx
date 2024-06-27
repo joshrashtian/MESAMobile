@@ -75,10 +75,10 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
       onClose={() => Props.finished()}
       index={0}
     >
-      <Text style={{ fontFamily: "eudoxusbold", fontSize: 18 }}>
+      <Text style={{ fontFamily: "eudoxusbold", fontSize: 16 }}>
         {Props.title}
       </Text>
-      <Text>{Props.desc}</Text>
+      <Text style={{ fontFamily: "eudoxus", fontSize: 12 }}>{Props.desc}</Text>
       <View style={{ gap: 3, marginTop: 10 }}>
         {!Props.customButtons ? (
           <>

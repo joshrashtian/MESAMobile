@@ -51,13 +51,14 @@ const UpcomingEvent = () => {
       .select()
       .in("id", interests)
       .gte("start", new Date(Date.now()).toISOString())
-      .order("start");
+      .order("start")
+      .single();
 
     if (error) {
       console.log(error);
       return;
     }
-    setEvent(FetchedData[0]);
+    setEvent(FetchedData);
   }
 
   useEffect(() => {

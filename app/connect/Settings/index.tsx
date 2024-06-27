@@ -13,7 +13,14 @@ const Settings = () => {
       <Text style={{ fontFamily: "eudoxusbold" }}>About Account</Text>
       <TouchableOpacity
         onPress={() => {
-          user.signOut();
+          open({
+            title: "Are You Sure You Would Like To Sign Out?",
+            desc: `You may always sign back in using ${user.user?.email}.`,
+            disengagable: true,
+            onConfirm: () => {
+              user.signOut();
+            },
+          });
         }}
         style={{
           padding: 10,

@@ -163,7 +163,7 @@ const CreateEvent = () => {
             desc: eventDetails?.desc,
             type: eventDetails?.type,
             start: date?.startDate,
-            end: date?.endTime,
+            endtime: date?.endDate,
             location: eventDetails?.location,
             tags: tags,
             creator: user?.id,

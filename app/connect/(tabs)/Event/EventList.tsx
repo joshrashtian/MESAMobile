@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   between: {
     height: 1,
     width: "100%",
-    margin: 5,
+    margin: 3,
     backgroundColor: "",
   },
 });

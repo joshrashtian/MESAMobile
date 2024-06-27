@@ -43,8 +43,8 @@ const ForYouEvents = () => {
       .select("*", { count: "exact" })
       .textSearch("name", finalQuery, {
         type: "websearch",
-      });
-    //.gte("start", new Date(Date.now()).toISOString());
+      })
+      .gte("start", new Date(Date.now()).toISOString());
 
     if (error) {
       console.log(error);

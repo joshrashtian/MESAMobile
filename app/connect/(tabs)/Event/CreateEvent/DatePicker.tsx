@@ -78,7 +78,6 @@ const DatePicker = ({ changeDate }: { changeDate: (e: any) => void }) => {
         />
         <DateTimePicker
           mode="time"
-          minimumDate={new Date(Date.now())}
           display="clock"
           value={startTime}
           onChange={(e: DateTimePickerEvent) => handleDateChange(e, 2)}
@@ -98,7 +97,6 @@ const DatePicker = ({ changeDate }: { changeDate: (e: any) => void }) => {
           <Text>End Date</Text>
           <DateTimePicker
             mode="date"
-            minimumDate={startDate}
             display="clock"
             value={endDate}
             onChange={(e: DateTimePickerEvent) => handleDateChange(e, 3)}
@@ -106,7 +104,6 @@ const DatePicker = ({ changeDate }: { changeDate: (e: any) => void }) => {
           <DateTimePicker
             mode="time"
             display="clock"
-            minimumDate={startTime}
             onChange={(e: DateTimePickerEvent) => handleDateChange(e, 4)}
             value={endTime}
           />

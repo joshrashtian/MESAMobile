@@ -84,7 +84,7 @@ const EventHome = () => {
             showsHorizontalScrollIndicator={false}
           >
             {buttons.map((e) => (
-              <Link href={e.link} key={e.link} style={{ marginBottom: 10 }}>
+              <Link href={e.link} key={e.link} style={{ marginBottom: 5 }}>
                 <View
                   style={{
                     width: Dimensions.get("window").width / 2 - 15,
@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   between: {
     height: 1,
     width: "100%",
-    margin: 5,
+
     backgroundColor: "",
   },
 });
