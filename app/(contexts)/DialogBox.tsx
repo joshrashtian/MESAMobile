@@ -1,5 +1,8 @@
-import BottomSheet, { BottomSheetBackdrop } from "@gorhom/bottom-sheet";
-import { createContext, useContext, useMemo, useState } from "react";
+import BottomSheet, {
+  BottomSheetBackdrop,
+  TouchableOpacity,
+} from "@gorhom/bottom-sheet";
+import { createContext, useContext, useMemo, useRef, useState } from "react";
 import { Text } from "react-native";
 import { FullWindowOverlay } from "react-native-screens";
 
@@ -32,19 +35,29 @@ export function DialogBoxProvider({ children }: { children: React.ReactNode }) {
   return (
     <DialogContext.Provider value={dialogFunction}>
       {children}
-      <FullWindowOverlay>{dialog && <Dialog {...dialog} />}</FullWindowOverlay>
+      <FullWindowOverlay>
+        {dialog && (
+          <Dialog
+            {...dialog}
+            finished={() => setTimeout(() => setDialog(null), 200)}
+          />
+        )}
+      </FullWindowOverlay>
     </DialogContext.Provider>
   );
 }
 
-export const Dialog = (Props: DialogBoxProps) => {
+export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
   const points = useMemo(() => ["33%"], []);
-
+  const dialogRef = useRef();
   return (
     <BottomSheet
+      //@ts-ignore
+      ref={dialogRef}
       backdropComponent={(props: any) => (
         <BottomSheetBackdrop
           appearsOnIndex={0}
+          onPress={() => Props.finished()}
           pressBehavior={Props.disengagable ? "close" : "none"}
           disappearsOnIndex={-1}
           {...props}
@@ -53,12 +66,25 @@ export const Dialog = (Props: DialogBoxProps) => {
       enablePanDownToClose={false}
       style={{ padding: 10 }}
       snapPoints={points}
+      onClose={() => Props.finished()}
       index={0}
     >
       <Text style={{ fontFamily: "eudoxusbold", fontSize: 18 }}>
         {Props.title}
       </Text>
       <Text>{Props.desc}</Text>
+      {Props.onConfirm && (
+        <TouchableOpacity
+          onPress={() => {
+            //@ts-ignore
+            Props.onConfirm();
+            //@ts-ignore
+            dialogRef.current.close();
+          }}
+        >
+          <Text>Okay</Text>
+        </TouchableOpacity>
+      )}
     </BottomSheet>
   );
 };

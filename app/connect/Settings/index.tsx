@@ -31,7 +31,10 @@ const Settings = () => {
           open({
             title: "Delete Account",
             desc: "Are you sure you want to delete your account?",
-            disengagable: false,
+            disengagable: true,
+            onConfirm: () => {
+              console.log("wow");
+            },
           });
         }}
         style={{
