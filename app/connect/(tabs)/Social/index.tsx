@@ -37,6 +37,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetProps,
 } from "@gorhom/bottom-sheet";
+import { useUser, useUserData } from "../../../(contexts)/AuthContext";
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
@@ -49,6 +50,7 @@ const SocialHome = () => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const window = useWindowDimensions();
+  const { id } = useUserData();
 
   async function addMoreData() {
     if (!currentCount || !count) return;
@@ -78,6 +80,7 @@ const SocialHome = () => {
 
   async function fetchData() {
     setRefreshing(true);
+    setCurrentCount(0);
     const {
       data,
       error,
@@ -85,6 +88,7 @@ const SocialHome = () => {
     } = await supabase
       .from("posts")
       .select("*", { count: "exact" })
+      //.neq("userid", id)
       .order("created_at", { ascending: false })
       .range(0, 5);
 

@@ -7,7 +7,7 @@ import { useDialog } from "../../(contexts)/DialogBox";
 
 const Settings = () => {
   const user = useUser();
-  const { open } = useDialog();
+  const { open, close } = useDialog();
   return (
     <View style={{ padding: 20, gap: 3 }}>
       <Text style={{ fontFamily: "eudoxusbold" }}>About Account</Text>
@@ -39,9 +39,20 @@ const Settings = () => {
             title: "Delete Account",
             desc: "Are you sure you want to delete your account?",
             disengagable: true,
-            onConfirm: () => {
-              console.log("stop");
-            },
+            customComponent: (
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("Pressed!");
+                  close({
+                    onClose: () => {
+                      console.log("Closed!");
+                    },
+                  });
+                }}
+              >
+                <Text>Okay</Text>
+              </TouchableOpacity>
+            ),
           });
         }}
         style={{

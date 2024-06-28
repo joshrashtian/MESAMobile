@@ -158,5 +158,14 @@ export const AuthContextProvider = ({
 
 export const useUser = () => {
   const user = useContext(AuthContext);
+
   return user;
 };
+
+export function useUserData() {
+  let user = useContext(AuthContext);
+
+  return {
+    id: user.user?.id,
+  };
+}

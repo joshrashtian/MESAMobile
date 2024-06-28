@@ -16,16 +16,21 @@ export type DialogBoxProps = {
     confirm?: boolean;
   }[];
   disengagable?: boolean;
+  customComponent?: React.ReactNode;
+};
+
+type CloseParams = {
+  onClose?: () => void;
 };
 
 interface DialogBox {
   open: (dialogBox: DialogBoxProps) => void;
-  close: () => void;
+  close: (closeOptions?: CloseParams) => void;
 }
 
 const DialogContext = createContext<DialogBox>({
   open: (dialogBox: DialogBoxProps) => {},
-  close: () => {},
+  close: (closeOptions?: CloseParams) => {},
 });
 
 export function DialogBoxProvider({ children }: { children: React.ReactNode }) {
@@ -33,7 +38,10 @@ export function DialogBoxProvider({ children }: { children: React.ReactNode }) {
   const dialogFunction = useMemo(
     () => ({
       open: (dialogBox: DialogBoxProps) => setDialog(dialogBox),
-      close: () => setDialog(null),
+      close: (closeOptions?: CloseParams) => {
+        if (closeOptions?.onClose) closeOptions.onClose();
+        setDialog(null);
+      },
     }),
     []
   );
@@ -55,6 +63,7 @@ export function DialogBoxProvider({ children }: { children: React.ReactNode }) {
 export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
   const points = useMemo(() => ["33%"], []);
   const dialogRef = useRef();
+
   return (
     <BottomSheet
       //@ts-ignore
@@ -75,62 +84,70 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
       onClose={() => Props.finished()}
       index={0}
     >
-      <Text style={{ fontFamily: "eudoxusbold", fontSize: 16 }}>
-        {Props.title}
-      </Text>
-      <Text style={{ fontFamily: "eudoxus", fontSize: 12 }}>{Props.desc}</Text>
-      <View style={{ gap: 3, marginTop: 10 }}>
-        {!Props.customButtons ? (
-          <>
-            {Props.onConfirm && (
+      {Props.customComponent ? (
+        Props.customComponent
+      ) : (
+        <>
+          <Text style={{ fontFamily: "eudoxusbold", fontSize: 16 }}>
+            {Props.title}
+          </Text>
+          <Text style={{ fontFamily: "eudoxus", fontSize: 12 }}>
+            {Props.desc}
+          </Text>
+          <View style={{ gap: 3, marginTop: 10 }}>
+            {!Props.customButtons ? (
               <>
-                <TouchableOpacity
-                  style={{ backgroundColor: "#fff", padding: 10 }}
-                  onPress={() => {
-                    //@ts-ignore
-                    Props.onConfirm();
-                    //@ts-ignore
-                    dialogRef.current.close();
-                  }}
-                >
-                  <Text style={{ fontFamily: "eudoxus" }}>Confirm</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ backgroundColor: "#fff", padding: 10 }}
-                  onPress={() => {
-                    //@ts-ignore
-                    dialogRef.current.close();
-                  }}
-                >
-                  <Text style={{ fontFamily: "eudoxus" }}>Cancel</Text>
-                </TouchableOpacity>
+                {Props.onConfirm && (
+                  <>
+                    <TouchableOpacity
+                      style={{ backgroundColor: "#fff", padding: 10 }}
+                      onPress={() => {
+                        //@ts-ignore
+                        Props.onConfirm();
+                        //@ts-ignore
+                        dialogRef.current.close();
+                      }}
+                    >
+                      <Text style={{ fontFamily: "eudoxus" }}>Confirm</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={{ backgroundColor: "#fff", padding: 10 }}
+                      onPress={() => {
+                        //@ts-ignore
+                        dialogRef.current.close();
+                      }}
+                    >
+                      <Text style={{ fontFamily: "eudoxus" }}>Cancel</Text>
+                    </TouchableOpacity>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                {Props.customButtons.map((e) => (
+                  <TouchableOpacity
+                    style={{ backgroundColor: "#fff", padding: 10 }}
+                    onPress={() => {
+                      if (e.confirm) {
+                        //@ts-ignore
+                        Props.onConfirm();
+                        //@ts-ignore
+                        dialogRef.current.close();
+                      } else
+                        e.onPress
+                          ? e.onPress()
+                          : //@ts-ignore
+                            dialogRef.current.close();
+                    }}
+                  >
+                    <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
+                  </TouchableOpacity>
+                ))}
               </>
             )}
-          </>
-        ) : (
-          <>
-            {Props.customButtons.map((e) => (
-              <TouchableOpacity
-                style={{ backgroundColor: "#fff", padding: 10 }}
-                onPress={() => {
-                  if (e.confirm) {
-                    //@ts-ignore
-                    Props.onConfirm();
-                    //@ts-ignore
-                    dialogRef.current.close();
-                  } else
-                    e.onPress
-                      ? e.onPress()
-                      : //@ts-ignore
-                        dialogRef.current.close();
-                }}
-              >
-                <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
-              </TouchableOpacity>
-            ))}
-          </>
-        )}
-      </View>
+          </View>
+        </>
+      )}
     </BottomSheet>
   );
 };
@@ -149,9 +166,9 @@ export function useDialog() {
     dialog.open(dialogBox);
   }
 
-  function close() {
-    dialog.close();
+  function close(closeOptions?: CloseParams) {
+    dialog.close(closeOptions);
   }
 
-  return dialog;
+  return { getContext, open, close };
 }
