@@ -159,6 +159,7 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
                   if (e.visible === false) return null;
                   return (
                     <TouchableOpacity
+                      key={e.title}
                       style={{ backgroundColor: "#fff", padding: 10 }}
                       onPress={() => {
                         if (e.confirm) {

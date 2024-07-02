@@ -1,6 +1,7 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { Stack } from "expo-router";
+import { Link, Stack } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const LearningLayout = () => {
   return (
@@ -19,6 +20,11 @@ const LearningLayout = () => {
           flex: 1,
           backgroundColor: "#f9f9f9",
         },
+        headerRight: () => (
+          <Link href="/connect/CreateQuestion/">
+            <Ionicons name="pencil" size={24} />
+          </Link>
+        ),
       }}
     >
       <Stack.Screen

@@ -6,20 +6,20 @@ import Poll from "./poll";
 export type PollType = {
   relations: readonly any[];
   id: string;
-  created_at: Date;
-  creator: {
+  created_at?: Date;
+  creator?: {
     id: string;
-    picture: string;
-    realname: string;
-    username: string;
+    picture?: string;
+    realname?: string;
+    username?: string;
   };
-  due: Date;
+  due?: Date;
   correct: Number;
   options: string[];
   question: string;
-  context: boolean;
+  context?: boolean;
   creatorid: string;
-  contextType: "png";
+  contextType?: "png";
 };
 
 const Polls = () => {

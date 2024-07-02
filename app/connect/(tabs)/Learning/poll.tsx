@@ -30,26 +30,43 @@ const Poll = ({ poll }: { poll: PollType }) => {
       style={{
         backgroundColor: "#FFF",
         borderRadius: 10,
-        borderColor: "#ccc",
-        borderWidth: 1,
         marginVertical: 5,
+        shadowColor: "#888",
+        shadowOffset: { width: 0, height: 5 },
+        shadowOpacity: 0.2,
+        shadowRadius: 5,
+        elevation: 10,
         padding: 20,
+        margin: 10,
         flexDirection: "column",
         justifyContent: "space-around",
       }}
     >
       <View>
-        <Text style={{ fontSize: 15, fontFamily: "mono", fontWeight: "bold" }}>
-          {classes &&
-            classes?.length > 0 &&
-            `${classes?.map((e) => `${e.category}-${e.num}`)} | `}
-          {""}
-          {poll.correct !== null ? "Question" : "Poll"}
-        </Text>
-        <Text style={{ fontFamily: "eudoxus", fontSize: 20 }}>
+        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Text
+            style={{ fontSize: 15, fontFamily: "eudoxus", fontWeight: "bold" }}
+          >
+            {poll.correct !== null ? "Question" : "Poll"}
+          </Text>
+          {classes && classes?.length > 0 && (
+            <Text
+              style={{
+                fontSize: 15,
+                fontFamily: "eudoxus",
+                color: "#444",
+                fontWeight: "bold",
+              }}
+            >
+              {`${classes?.map((e) => `${e.category}-${e.num}`)} `}
+              {""}
+            </Text>
+          )}
+        </View>
+        <Text style={{ fontFamily: "eudoxusbold", fontSize: 20 }}>
           {poll.question}
         </Text>
-        <Text>asked by {poll.creator.username}</Text>
+        <Text>asked by {poll.creator?.username}</Text>
       </View>
 
       <View style={{ gap: 3, marginTop: 20 }}>
@@ -61,20 +78,27 @@ const Poll = ({ poll }: { poll: PollType }) => {
               padding: 16,
               borderRadius: 10,
               alignItems: "center",
-              backgroundColor: selected === i ? "#eee" : "#f6f6f6",
+              backgroundColor:
+                selected === i
+                  ? poll.correct
+                    ? poll.correct === selected
+                      ? "#ada"
+                      : "#daa"
+                    : "#eee"
+                  : "#f6f6f6",
               flexDirection: "row",
               gap: 10,
             }}
           >
             <View
               style={{
-                width: 5,
-                height: 5,
-                borderRadius: 5,
-                backgroundColor: "#000",
+                borderRightWidth: 1,
+                paddingRight: 10,
               }}
-            />
-            <Text>{e}</Text>
+            >
+              <Text style={{ fontFamily: "eudoxusbold" }}>{i + 1}</Text>
+            </View>
+            <Text style={{ fontFamily: "eudoxus" }}>{e}</Text>
           </TouchableOpacity>
         ))}
       </View>
