@@ -24,6 +24,33 @@ const EventHome = () => {
   const [refreshing, setRefreshing] = useState(false);
   const user = useUser();
 
+  useEffect(() => {
+    const channels = supabase
+      .channel("event_chanel")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "events",
+        },
+        (payload) => {
+          if (payload.eventType === "DELETE")
+            setEvents((events) =>
+              events?.filter((event) => event.id !== payload.old.id)
+            );
+          if (payload.eventType === "INSERT")
+            //@ts-ignore
+            setEvents((e) => (e ? [payload.new, ...e] : [payload.new]));
+        }
+      )
+      .subscribe();
+
+    return () => {
+      channels.unsubscribe();
+    };
+  }, [supabase]);
+
   async function fetchEvents() {
     const { data: FetchedData, error } = await supabase
       .from("events")

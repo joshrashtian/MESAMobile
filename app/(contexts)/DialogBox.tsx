@@ -1,22 +1,39 @@
+import { Ionicons } from "@expo/vector-icons";
 import BottomSheet, {
   BottomSheetBackdrop,
   TouchableOpacity,
 } from "@gorhom/bottom-sheet";
-import { createContext, useContext, useMemo, useRef, useState } from "react";
+import {
+  createContext,
+  FC,
+  useContext,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Text, View } from "react-native";
+import { StyleProps } from "react-native-reanimated";
 import { FullWindowOverlay } from "react-native-screens";
 
 export type DialogBoxProps = {
   onConfirm?: () => void;
   title: string;
-  desc: string;
+  desc?: string;
   customButtons?: {
     title: string;
     onPress?: () => void;
     confirm?: boolean;
+    visible?: boolean;
   }[];
+  titleStyle?: StyleProps;
   disengagable?: boolean;
   customComponent?: React.ReactNode;
+  icon?: any;
+  iconSettings?: {
+    size?: number;
+    color?: string;
+  };
+  backgroundComponent?: FC | undefined;
 };
 
 type CloseParams = {
@@ -83,16 +100,30 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
       snapPoints={points}
       onClose={() => Props.finished()}
       index={0}
+      backgroundComponent={Props.backgroundComponent ?? undefined}
     >
       {Props.customComponent ? (
         Props.customComponent
       ) : (
         <>
-          <Text style={{ fontFamily: "eudoxusbold", fontSize: 16 }}>
+          {Props.icon && (
+            <Ionicons
+              name={Props.icon}
+              size={Props.iconSettings?.size ?? 16}
+              color={Props.iconSettings?.color ?? "#000"}
+            />
+          )}
+          <Text
+            style={{
+              fontFamily: "eudoxusbold",
+              fontSize: 16,
+              ...Props.titleStyle,
+            }}
+          >
             {Props.title}
           </Text>
           <Text style={{ fontFamily: "eudoxus", fontSize: 12 }}>
-            {Props.desc}
+            {Props?.desc}
           </Text>
           <View style={{ gap: 3, marginTop: 10 }}>
             {!Props.customButtons ? (
@@ -124,25 +155,28 @@ export const Dialog = (Props: DialogBoxProps & { finished: any }) => {
               </>
             ) : (
               <>
-                {Props.customButtons.map((e) => (
-                  <TouchableOpacity
-                    style={{ backgroundColor: "#fff", padding: 10 }}
-                    onPress={() => {
-                      if (e.confirm) {
-                        //@ts-ignore
-                        Props.onConfirm();
-                        //@ts-ignore
-                        dialogRef.current.close();
-                      } else
-                        e.onPress
-                          ? e.onPress()
-                          : //@ts-ignore
-                            dialogRef.current.close();
-                    }}
-                  >
-                    <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
-                  </TouchableOpacity>
-                ))}
+                {Props.customButtons.map((e) => {
+                  if (e.visible === false) return null;
+                  return (
+                    <TouchableOpacity
+                      style={{ backgroundColor: "#fff", padding: 10 }}
+                      onPress={() => {
+                        if (e.confirm) {
+                          //@ts-ignore
+                          Props.onConfirm();
+                          //@ts-ignore
+                          dialogRef.current.close();
+                        } else
+                          e.onPress
+                            ? e.onPress()
+                            : //@ts-ignore
+                              dialogRef.current.close();
+                      }}
+                    >
+                      <Text style={{ fontFamily: "eudoxus" }}>{e.title}</Text>
+                    </TouchableOpacity>
+                  );
+                })}
               </>
             )}
           </View>

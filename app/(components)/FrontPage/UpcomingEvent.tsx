@@ -5,6 +5,7 @@ import { useUser } from "../../(contexts)/AuthContext";
 import { supabase } from "../../../supabase";
 import { EventType } from "../EventComponent";
 import { Link, router } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
 
 const UpcomingEvent = () => {
   const user = useUser();
@@ -52,6 +53,7 @@ const UpcomingEvent = () => {
       .in("id", interests)
       .gte("start", new Date(Date.now()).toISOString())
       .order("start")
+      .limit(1)
       .single();
 
     if (error) {
@@ -65,7 +67,32 @@ const UpcomingEvent = () => {
     fetchEvents();
   }, [user]);
 
-  if (!event) return null;
+  if (!event)
+    return (
+      <TouchableOpacity onPress={() => router.push(`/connect/Event`)}>
+        <Animated.View
+          entering={FadeInUp.easing(Easing.inOut(Easing.quad))}
+          style={{
+            backgroundColor: "#fff",
+            shadowColor: "#000",
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.7,
+            shadowRadius: 3,
+            padding: 8,
+            height: 100,
+            justifyContent: "flex-end",
+          }}
+        >
+          <Ionicons name="calendar-number" size={24} />
+          <Text style={{ fontFamily: "eudoxusbold" }}>
+            Currently, You Have No Events Coming Up.
+          </Text>
+          <Text style={{ fontFamily: "eudoxus", color: "#333" }}>
+            Tap Here To Go To Event Hub
+          </Text>
+        </Animated.View>
+      </TouchableOpacity>
+    );
 
   const date = new Date(event.start);
   const now = new Date(Date.now());

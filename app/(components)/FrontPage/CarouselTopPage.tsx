@@ -13,6 +13,7 @@ const CarouselTopPage = () => {
         size={27}
         color="#Fff"
       />
+
       <Text
         style={{
           color: "#FFF",
