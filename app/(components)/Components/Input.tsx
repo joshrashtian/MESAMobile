@@ -12,10 +12,7 @@ const FormInput = (props: TextInputProps) => {
           borderRadius: 10,
           fontFamily: "eudoxus",
           fontSize: 16,
-          shadowColor: "#aaa",
-          shadowOffset: { width: 0, height: 2 },
-          shadowRadius: 1,
-          shadowOpacity: 1,
+
           borderWidth: 1,
           marginVertical: 6,
           borderColor: "#ccc",

@@ -38,6 +38,8 @@ import BottomSheet, {
   BottomSheetProps,
 } from "@gorhom/bottom-sheet";
 import { useUser, useUserData } from "../../../(contexts)/AuthContext";
+import { useDialog } from "../../../(contexts)/DialogBox";
+import WimModal from "../../../(components)/WimModal";
 
 const SocialHome = () => {
   const [postsRendered, setPostsRendered] = useState<PostType[]>();
@@ -48,9 +50,9 @@ const SocialHome = () => {
 
   const values = useMemo(() => ["25%", "40%"], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const modal = useDialog();
 
   const window = useWindowDimensions();
-  const { id } = useUserData();
 
   async function addMoreData() {
     if (!currentCount || !count) return;
@@ -381,8 +383,13 @@ const SocialHome = () => {
           </View>
           <TouchableOpacity
             onPress={() => {
-              router.dismiss();
-              router.push("/connect/Social/Creator/post");
+              bottomSheetRef.current?.close();
+              modal.open({
+                customComponent: <WimModal />,
+                title: "Wim",
+                desc: "okay",
+                disengagable: true,
+              });
             }}
             style={{
               backgroundColor: "#fff",

@@ -3,6 +3,7 @@ import BottomSheet, {
   BottomSheetBackdrop,
   TouchableOpacity,
 } from "@gorhom/bottom-sheet";
+import React from "react";
 import {
   createContext,
   FC,

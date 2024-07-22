@@ -1,4 +1,4 @@
-import {
+import React, {
   Children,
   createContext,
   useContext,
@@ -165,7 +165,5 @@ export const useUser = () => {
 export function useUserData() {
   let user = useContext(AuthContext);
 
-  return {
-    id: user.user?.id,
-  };
+  return user.data;
 }

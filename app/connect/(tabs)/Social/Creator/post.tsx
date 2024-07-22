@@ -12,6 +12,8 @@ import * as ExpoFile from "expo-file-system";
 import Animated, {
   Easing,
   FadeInDown,
+  FadeInUp,
+  FadeOutLeft,
   useAnimatedStyle,
   withTiming,
 } from "react-native-reanimated";
@@ -19,6 +21,8 @@ import { supabase } from "../../../../../supabase";
 import { useUser } from "../../../../(contexts)/AuthContext";
 import { router } from "expo-router";
 import { decode } from "base64-arraybuffer";
+import FormInput from "../../../../(components)/Components/Input";
+import { Ionicons } from "@expo/vector-icons";
 
 const PostCreator = () => {
   const user = useUser();
@@ -26,6 +30,8 @@ const PostCreator = () => {
   const [body, setBody] = useState<string>();
   const [image, setImage] = useState<string>();
 
+  const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+  const IonAnimated = Animated.createAnimatedComponent(Ionicons);
   const createPost = async () => {
     const { data, error } = await supabase
       .from("posts")
@@ -86,12 +92,19 @@ const PostCreator = () => {
       duration: 200,
       easing: Easing.inOut(Easing.quad),
     }),
+    padding: 10,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 6,
+  }));
+
+  const AnimatedText = useAnimatedStyle(() => ({
     color: withTiming(title ? "#fff" : "#000", {
       duration: 200,
       easing: Easing.inOut(Easing.quad),
     }),
-    padding: 10,
-    borderRadius: 10,
   }));
 
   return (
@@ -99,59 +112,78 @@ const PostCreator = () => {
       <View style={{ gap: 15 }}>
         <Text
           style={{
-            fontFamily: "eudoxus",
-            fontSize: 28,
-            color: "#000",
-            fontWeight: "bold",
+            fontFamily: "eudoxusbold",
+            color: "rgba(240, 0, 0, 0.6)",
+            fontSize: 36,
           }}
         >
           Create Post
         </Text>
-        <KeyboardAvoidingView
-          style={{
-            gap: 10,
-          }}
-        >
-          <TextInput
+        <KeyboardAvoidingView style={{}}>
+          <FormInput
             placeholder="Post Title..."
             onChangeText={(e) => {
               setTitle(e);
             }}
-            style={[styles.input, { fontSize: 16 }]}
           />
-          <TextInput
+          <FormInput
             placeholder="Contents of Post..."
             multiline
             numberOfLines={4}
             maxLength={300}
             onChangeText={(e) => setBody(e)}
-            style={styles.input}
           />
         </KeyboardAvoidingView>
       </View>
       {image && (
-        <Animated.Image
-          entering={FadeInDown}
-          src={image}
-          style={{ width: 100, height: 100 }}
-        />
+        <Animated.View
+          style={{
+            padding: 10,
+            backgroundColor: "#eee",
+            borderRadius: 20,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Animated.Image
+            entering={FadeInDown}
+            src={image}
+            style={{ width: 150, height: 150, borderRadius: 30 }}
+          />
+        </Animated.View>
       )}
-      <View style={{ flexDirection: "row", gap: 4 }}>
-        <Pressable onPress={uploadImage}>
+      <View style={{ gap: 4, width: "100%" }}>
+        <Pressable
+          onPress={uploadImage}
+          style={{
+            backgroundColor: "#E1341E",
+            padding: 10,
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: 6,
+            borderRadius: 10,
+          }}
+        >
+          <Ionicons name="image-outline" size={24} color="white" />
           <Animated.Text
-            style={{
-              backgroundColor: "#E1341E",
-              color: "#fff",
-              padding: 10,
-              borderRadius: 10,
-            }}
+            style={{ color: "#fff", fontSize: 17, fontFamily: "eudoxus" }}
           >
             Upload Image
           </Animated.Text>
         </Pressable>
-        <Pressable onPress={() => (title && body ? createPost() : null)}>
-          <Animated.Text style={submitStyle}>Submit Post</Animated.Text>
-        </Pressable>
+        <AnimatedPressable
+          style={submitStyle}
+          onPress={() => (title && body ? createPost() : null)}
+        >
+          <Ionicons name="cloud-upload" size={24} color="color" />
+
+          <Animated.Text
+            style={[AnimatedText, { fontSize: 17, fontFamily: "eudoxus" }]}
+          >
+            Submit Post
+          </Animated.Text>
+        </AnimatedPressable>
       </View>
     </View>
   );

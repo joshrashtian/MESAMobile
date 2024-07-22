@@ -1,4 +1,4 @@
-import { View, Text, Pressable } from "react-native";
+import { View, Text, Pressable, PressableProps } from "react-native";
 import React from "react";
 import Animated, {
   Easing,
@@ -15,12 +15,13 @@ const MenuButton = ({
   title,
   icon,
   func,
+  ...props
 }: {
   link?: any;
   title: string;
   icon: any;
   func?: () => void;
-}) => {
+} & PressableProps) => {
   const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
   const buttonValue = useSharedValue(1);
@@ -44,7 +45,8 @@ const MenuButton = ({
   return (
     <AnimatedPressable
       onPress={() => {
-        router.push(link);
+        if (func) func();
+        else if (link) router.push(link);
       }}
       onPressIn={() => {
         buttonValue.value = 0.95;
@@ -65,6 +67,7 @@ const MenuButton = ({
           gap: 5,
           borderRadius: 10,
         },
+        props.style,
       ]}
     >
       <Ionicons name={icon} size={16} />

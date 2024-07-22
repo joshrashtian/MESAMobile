@@ -38,7 +38,11 @@ const Layout = () => {
 
         <Stack.Screen
           name="Creator/post"
-          options={{ presentation: "modal", title: "Create Post" }}
+          options={{
+            presentation: "modal",
+            headerShown: false,
+            title: "Create Post",
+          }}
         />
         <Stack.Screen name="Search/index" options={{ title: "Search" }} />
       </Stack>
